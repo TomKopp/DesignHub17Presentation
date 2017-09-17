@@ -13,13 +13,11 @@ module.exports = () => {
   })
 
   // Load the index.html of the app.
-  win.loadURL(url.format({
-    // pathname: path.join(__dirname, '..', 'views', 'index.html')
-    pathname: path.join(__dirname, '..', 'views', 'videoSelection.html')
-    // pathname: path.join(__dirname, '..', 'views', 'animationCanvas.html')
-    , protocol: 'file:'
-    , slashes: true
-  }))
+  win.loadURL(url.format(
+    // path.join(__dirname, '..', 'views', 'index.html')
+    // path.join(__dirname, '..', 'views', 'videoSelection.html')
+    path.join(__dirname, '..', 'views', 'animationCanvas.html')
+  ))
 
   win.webContents.on('did-finish-load', () => {
     fs.readFile(
