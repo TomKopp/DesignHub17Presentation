@@ -1,0 +1,31 @@
+.list-media-element {
+  margin: 0;
+  padding: 0;
+}
+
+.list-pictures-large {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+}
+
+.list-item-pictures-large {
+  border-radius: 3px;
+  border: 1px solid;
+  box-shadow: $shadow-block-default, $shadow-block-light-inset;
+  cursor: pointer;
+  flex: 1 1 33%;
+  margin: 1%;
+  max-width: 25em;
+  padding: 1%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.list-item-pictures-large .sublabel {
+  margin: 0;
+  padding: 0;
+}

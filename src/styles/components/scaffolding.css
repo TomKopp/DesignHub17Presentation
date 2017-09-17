@@ -1,0 +1,11 @@
+.grid-default {
+  display: grid;
+  grid: $size-l repeat(9, 1fr) $size-l / $size-l repeat(12, 1fr) $size-l;
+  grid-gap: $space-s;
+}
+
+.box-center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
