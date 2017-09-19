@@ -1,9 +1,12 @@
 const { BrowserWindow } = require('electron')
 const path = require('path')
-const url = require('url')
 const fs = require('fs')
 
-module.exports = () => {
+/**
+ * @param {string} URL2Load url that will be loaded in the window
+ * @return {BrowserWindow} returns a new hidden window
+ */
+module.exports = (URL2Load) => {
   // Create the browser window.
   let win = new BrowserWindow({
     show: false
@@ -12,12 +15,7 @@ module.exports = () => {
     , autoHideMenuBar: true
   })
 
-  // Load the index.html of the app.
-  win.loadURL(url.format(
-    // path.join(__dirname, '..', 'views', 'index.html')
-    // path.join(__dirname, '..', 'views', 'videoSelection.html')
-    path.join(__dirname, '..', 'views', 'animationCanvas.html')
-  ))
+  win.loadURL(URL2Load)
 
   win.webContents.on('did-finish-load', () => {
     fs.readFile(

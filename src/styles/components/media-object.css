@@ -1,0 +1,18 @@
+.media-object {
+  border: 1px solid;
+  cursor: pointer;
+  margin: 1%;
+  padding: 1%;
+
+  display: flex;
+  align-items: flex-start;
+}
+
+.media-object > .media-figure {
+  width: 30%;
+}
+
+.media-object > .media-body {
+  flex: 1 1 68%;
+  margin-left: 2%;
+}

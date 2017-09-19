@@ -3,15 +3,17 @@ const h = require('hyperscript')
 const path = require('path')
 const url = require('url')
 const winSize = remote.getCurrentWindow().getContentSize()
+const winSizeWidth = 0
+const winSizeHeight = 1
 
 const video = h(
   'video.media'
   , {
     src: url.format(path.join(process.cwd(), 'assets', 'video.mp4'))
-    , width: winSize[0]
-    , height: winSize[1]
-    , controles: true
-    , onclick () {
+    , width: winSize[winSizeWidth]
+    , height: winSize[winSizeHeight]
+    , controls: true
+    , onclick() {
       if (this.paused) {
         this.play()
       } else {
@@ -21,4 +23,4 @@ const video = h(
   }, 'Sorry, no video.'
 )
 
-document.getElementById('mainAnimationContainer').appendChild(video)
+document.getElementById('mainVideoContainer').appendChild(video)

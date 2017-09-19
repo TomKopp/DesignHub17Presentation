@@ -1,1 +1,1 @@
-# DesignHub 2017 - Prenentation app
+# DesignHub 2017 - Presentation app

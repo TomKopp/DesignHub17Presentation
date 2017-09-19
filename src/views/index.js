@@ -7,17 +7,20 @@ const mainSelection = [
   {
     label: 'Insert Video'
     , sublabel: 'Description'
-    , media: url.format(path.join(process.cwd(), ' assets', 'icons', 'mic.svg'))
+    , media: url.format(path.join(process.cwd(), 'assets', 'icons', 'mic.svg'))
+    , resource: url.format('/')
   }
   , {
     label: 'Select Video'
     , sublabel: 'Description'
-    , media: url.format(path.join(process.cwd(), ' assets', 'icons', 'mic.svg'))
+    , media: url.format(path.join(process.cwd(), 'assets', 'icons', 'mic.svg'))
+    , resource: url.format(path.join(process.cwd(), 'src', 'views', 'videoSelection.html'))
   }
   , {
     label: 'Settings'
     , sublabel: 'Description'
-    , media: url.format(path.join(process.cwd(), ' assets', 'icons', 'mic.svg'))
+    , media: url.format(path.join(process.cwd(), 'assets', 'icons', 'mic.svg'))
+    , resource: url.format('/')
   }
 ]
 
@@ -27,8 +30,12 @@ const ul = h('ul.list-pictures-large')
 mainSelection.forEach((menuItem) => {
   const li = h(
     'li.list-item-pictures-large'
-    , h('img', { src: menuItem.media, alt: `${menuItem.label} icon`, height: 50, width: 50 })
-    , h('h2', menuItem.label)
+    , h(
+      'a.box-center-content'
+      , { href: menuItem.resource }
+      , h('img', { src: menuItem.media, alt: `${menuItem.label} icon`, height: 50, width: 50 })
+      , h('h2.label', menuItem.label)
+    )
   )
 
   ul.appendChild(li)

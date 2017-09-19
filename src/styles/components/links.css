@@ -1,0 +1,7 @@
+a,
+a:hover,
+a:active,
+a:focus {
+  color: $text-color-primary-default;
+  text-decoration: none;
+}

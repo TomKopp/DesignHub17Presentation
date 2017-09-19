@@ -27,6 +27,10 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -36,7 +40,16 @@ body {
 }
 
 
-.list-media-element {
+a,
+a:hover,
+a:active,
+a:focus {
+  color: #fff;
+  text-decoration: none;
+}
+
+
+.list-media-object {
   margin: 0;
   padding: 0;
 }
@@ -60,11 +73,20 @@ body {
   -webkit-box-shadow: 1px 1px 3px 1px black, inset 0px 0px 3px white;
           box-shadow: 1px 1px 3px 1px black, inset 0px 0px 3px white;
   cursor: pointer;
+  display: block;
   -webkit-box-flex: 1;
       -ms-flex: 1 1 33%;
           flex: 1 1 33%;
   margin: 1%;
   max-width: 25em;
+  padding: 1%;
+}
+
+
+.media-object {
+  border: 1px solid;
+  cursor: pointer;
+  margin: 1%;
   padding: 1%;
 
   display: -webkit-box;
@@ -72,53 +94,22 @@ body {
   display: -ms-flexbox;
 
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
 }
 
 
-.list-item-pictures-large .sublabel {
-  margin: 0;
-  padding: 0;
+.media-object > .media-figure {
+  width: 30%;
 }
 
 
-.media-element {
-  border: 1px solid;
-  cursor: pointer;
+.media-object > .media-body {
   -webkit-box-flex: 1;
-      -ms-flex: 1 1 33%;
-          flex: 1 1 33%;
-  margin: 1%;
-  padding: 1%;
-
-  display: grid;
-  grid: auto / 30% auto;
-}
-
-
-.media-element > .media {
-  -ms-flex-item-align: center;
-      align-self: center;
-  grid-area: 1 / 1 / 3 / 2;
-  justify-self: center;
-  max-height: 100%;
-  max-width: 100%;
-}
-
-
-.media-element > .label{
-  grid-area: 1 / 2;
-}
-
-
-.media-element > .sublabel {
-  grid-area: 2 / 2;
+      -ms-flex: 1 1 68%;
+          flex: 1 1 68%;
+  margin-left: 2%;
 }
 
 

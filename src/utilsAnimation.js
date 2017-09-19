@@ -1,3 +1,6 @@
+/* eslint no-magic-numbers: "off" */
+/* eslint func-style: "off" */
+/* eslint max-params: "off" */
 module.exports = (() => {
 
   /**
@@ -14,7 +17,7 @@ module.exports = (() => {
     this.color = color
   }
 
-  Dot.prototype.draw = function (ctx) {
+  Dot.prototype.draw = function draw(ctx) {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
     ctx.closePath();
@@ -25,7 +28,5 @@ module.exports = (() => {
   const createDot = (posX = 0, posY = 0, radius = 10, color = '#667788') => new Dot(posX, posY, radius, color)
 
 
-  return Object.freeze({
-    createDot
-  })
+  return Object.freeze({ createDot })
 })()

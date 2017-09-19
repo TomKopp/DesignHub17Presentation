@@ -1,22 +1,19 @@
-const { app, Menu } = require('electron')
-// const settings = require('electron-settings')
+const { app } = require('electron')
 const path = require('path')
-const mainWindow = require(path.join(__dirname, 'mainWindow.js'))
+const url = require('url')
+// const settings = require('electron-settings')
+const newWindow = require(path.join(process.cwd(), 'src', 'main', 'createWindow.js'))
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
-
-// Context menu
-const contextMenu = Menu.buildFromTemplate([
-  {
-    label: 'DevTools'
-    , click: () => win.webContents.openDevTools()
-  }
-])
+let win = null
 
 const createWindow = () => {
-  win = mainWindow()
+  const frameURL = path.join(process.cwd(), 'src', 'views', 'index.html')
+  // const frameURL = path.join(process.cwd(), 'src', 'views', 'videoSelection.html')
+  // const frameURL = path.join(process.cwd(), 'src', 'views', 'animationCanvas.html')
+
+  win = newWindow(url.format(frameURL))
   win.once('ready-to-show', () => {
     win.show()
   })
@@ -42,11 +39,4 @@ app.on('activate', () => {
   if (win === null) {
     createWindow()
   }
-})
-
-// Add context menu to window
-app.on('browser-window-created', (event, win) => {
-  win.webContents.on('context-menu', (e, params) => {
-    contextMenu.popup(win, params.x, params.y)
-  })
 })
