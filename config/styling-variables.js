@@ -6,12 +6,15 @@ module.exports = {
   'background-color-default': '#FFFFFF'
   , 'background-color-light': '#E2E4E9'
   , 'background-color-dark': '#2b2a2a'
-  , 'background-color-animation-dark': 'rgba(42, 42, 42, .2)'
 
   // Text Color
   , 'text-color-primary-default': '#fff'
   , 'text-color-primary-on-light': '#2b2a2a'
   , 'text-color-primary-on-dark': '$text-color-primary-default'
+
+  // Animation Color
+  , 'animation-background-color-dark': 'rgba(42, 42, 42, .2)'
+  , 'animation-trace-color-default': '#fff'
 
   // Size
   , 'size-default': '16px'

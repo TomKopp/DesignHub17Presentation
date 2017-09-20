@@ -9,9 +9,9 @@ const newWindow = require(path.join(process.cwd(), 'src', 'main', 'createWindow.
 let win = null
 
 const createWindow = () => {
-  const frameURL = path.join(process.cwd(), 'src', 'views', 'index.html')
+  // const frameURL = path.join(process.cwd(), 'src', 'views', 'index.html')
   // const frameURL = path.join(process.cwd(), 'src', 'views', 'videoSelection.html')
-  // const frameURL = path.join(process.cwd(), 'src', 'views', 'animationCanvas.html')
+  const frameURL = path.join(process.cwd(), 'src', 'views', 'animationCanvas.html')
 
   win = newWindow(url.format(frameURL))
   win.once('ready-to-show', () => {

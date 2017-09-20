@@ -5,8 +5,18 @@
   "author": "Tom Kopp",
   "license": "MIT",
   "main": "./src/main/main.js",
+  "homepage": "https://github.com/witzbould/designhub17presentation#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/witzbould/designhub17presentation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/witzbould/designhub17presentation/issues"
+  },
   "dependencies": {
+    "color": "^2.0.0",
     "electron-settings": "^3.1.1",
+    "fast-csv": "^2.4.0",
     "hyperscript": "^2.0.2"
   },
   "devDependencies": {

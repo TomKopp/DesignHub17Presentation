@@ -8,7 +8,7 @@ const mainSelection = [
     label: 'Insert Video'
     , sublabel: 'Description'
     , media: url.format(path.join(process.cwd(), 'assets', 'icons', 'mic.svg'))
-    , resource: url.format('/')
+    , resource: url.format('#')
   }
   , {
     label: 'Select Video'
@@ -20,7 +20,7 @@ const mainSelection = [
     label: 'Settings'
     , sublabel: 'Description'
     , media: url.format(path.join(process.cwd(), 'assets', 'icons', 'mic.svg'))
-    , resource: url.format('/')
+    , resource: url.format('#')
   }
 ]
 
