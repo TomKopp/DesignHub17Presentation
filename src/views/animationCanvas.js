@@ -23,6 +23,8 @@ const projectionHeight = 2.25
 const widthCoefficient = winContentSizeWidth / projectionWidth
 const heightCoefficient = winContentSizeHeight / projectionHeight
 
+const canvas = h('canvas#animationCanvas', { width: winContentSizeWidth, height: winContentSizeHeight }, 'Sorry no canvas to draw on.')
+
 const csv = require('fast-csv')
 let myArray = []
 let avgZ = null
@@ -30,9 +32,9 @@ let avgZ = null
 csv
   .fromPath(path.join(process.cwd(), 'assets', 'Testdaten Kinect Tanzen.csv'), { trim: true, ignoreEmpty: true })
   .transform((data) => [
-      parseFloat(data[0])
-      , parseFloat(data[2])
-    ])
+    parseFloat(data[0])
+    , parseFloat(data[2])
+  ])
   .on('data', (data) => {
     myArray.push(data)
     // process.stdout(data)
@@ -45,15 +47,31 @@ csv
       val[0] * widthCoefficient + winContentSizeWidth / 2
       , (val[1] - avgZ) * heightCoefficient + winContentSizeHeight / 2
     ])
+
+
+    const ctx = canvas.getContext('2d')
+    const traceColor = color(stylingVars['animation-trace-color-default']).rgb().string()
+    const MyTrace = utilsAnimation.createTrace(wayPoints, ctx, traceColor)
+
+    document.getElementById('mainAnimationContainer').appendChild(canvas)
+
+
+    const main = (tFrame) => {
+      MyTrace.raf = window.requestAnimationFrame(main)
+      MyTrace.isRunning = true
+
+      // Call your update method. In our case, we give it rAF's timestamp.
+      update(tFrame)
+      render()
+    }
+
+    canvas.addEventListener('click', () => {
+      if (!MyTrace.isRunning) {
+        main()
+      }
+    })
   })
 
-
-const canvas = h('canvas#animationCanvas', { width: winContentSizeWidth, height: winContentSizeHeight }, 'Sorry no canvas to draw on.')
-// const ctx = canvas.getContext('2d')
-// const MyTrace = utilsAnimation.createTrace()
-// const ball = utilsAnimation.createDot(10, 10, 20, color(stylingVars['animation-trace-color-default']).alpha(0.2).rgb().string())
-
-document.getElementById('mainAnimationContainer').appendChild(canvas)
 
 // let vx = 5
 // let vy = 1
@@ -85,7 +103,7 @@ document.getElementById('mainAnimationContainer').appendChild(canvas)
 //   render()
 // }
 
-// // Start the cycle
+// Start the cycle
 // canvas.addEventListener('click', () => {
 //   if (!MyTrace.isRunning) {
 //     main()
