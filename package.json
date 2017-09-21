@@ -22,7 +22,7 @@
   "devDependencies": {
     "autoprefixer": "^7.1.4",
     "electron": "1.7.6",
-    "eslint": "^4.6.1",
+    "eslint": "^4.7.1",
     "postcss": "^6.0.11",
     "postcss-partial-import": "^4.1.0",
     "postcss-simple-vars": "^4.1.0"
