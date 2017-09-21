@@ -3,7 +3,6 @@ const { remote, screen } = require('electron')
 const h = require('hyperscript')
 const path = require('path')
 const url = require('url')
-const color = require('color')
 const newWindow = remote.require(path.join(process.cwd(), 'src', 'main', 'createWindow.js'))
 const stylingVars = require(path.join(process.cwd(), 'config', 'styling-variables.js'))
 const utilsAnimation = require(path.join(process.cwd(), 'src', 'utilsAnimation.js'))
@@ -50,24 +49,40 @@ csv
 
 
     const ctx = canvas.getContext('2d')
-    const traceColor = color(stylingVars['animation-trace-color-default']).rgb().string()
-    const MyTrace = utilsAnimation.createTrace(wayPoints, ctx, traceColor)
+    const MyTrace = utilsAnimation.createTrace(myArray, ctx, stylingVars['animation-trace-color-default'])
 
     document.getElementById('mainAnimationContainer').appendChild(canvas)
 
 
-    const main = (tFrame) => {
-      MyTrace.raf = window.requestAnimationFrame(main)
-      MyTrace.isRunning = true
+    const update = (tFrame) => {
+      // const nextTick = MyTrace.lastTick + MyTrace.tickLength
 
-      // Call your update method. In our case, we give it rAF's timestamp.
+      if (tFrame - MyTrace.lastTick > MyTrace.tickLength) {
+        MyTrace.update()
+        MyTrace.lastTick = tFrame
+      }
+    }
+
+    const render = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      MyTrace.render()
+    }
+
+    const main = (tFrame) => {
+      MyTrace.rAF = window.requestAnimationFrame(main)
+
       update(tFrame)
       render()
     }
 
     canvas.addEventListener('click', () => {
-      if (!MyTrace.isRunning) {
-        main()
+      if (MyTrace.isRunning) {
+        window.cancelAnimationFrame(MyTrace.rAF)
+        MyTrace.isRunning = false
+      } else {
+        MyTrace.isRunning = true
+        MyTrace.lastTick = performance.now()
+        main(performance.now())
       }
     })
   })

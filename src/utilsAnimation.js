@@ -1,6 +1,9 @@
 /* eslint no-magic-numbers: "off" */
 /* eslint func-style: "off" */
 /* eslint max-params: "off" */
+/* eslint max-statements: "off" */
+const color = require('color')
+
 module.exports = (() => {
 
   /**
@@ -16,7 +19,7 @@ module.exports = (() => {
     this.y = posY
     this.radius = radius
     this.color = color
-    this.ctx = null
+    this.ctx = ctx
   }
 
   Dot.prototype.draw = function draw() {
@@ -49,13 +52,18 @@ module.exports = (() => {
     this.isRunning = false
     // RequestAnimationFrame
     this.rAF = null
+    this.lastTick = null
+    // Time between Ticks in ms
+    this.tickLength = 34
     // Canvas context
-    this.ctx = null
+    this.ctx = ctx
     this.traceLength = 10
     this.traceCounter = 0
     this.trace = []
     this.traceColor = traceColor
     this.wayPoints = wayPoints
+
+    this.fillTrace()
   }
 
   Trace.prototype.fillTrace = function fillTrace() {
@@ -64,8 +72,13 @@ module.exports = (() => {
         x
         , y
       ] = this.wayPoints[(this.traceCounter + i) % this.wayPoints.length]
+      const alphaModifier = i / 10
+      const colorDot = color(this.traceColor)
+        .alpha(0.1 + alphaModifier)
+        .rgb()
+        .string()
 
-      this.trace[i] = createDot(x, y, this.ctx)
+      this.trace[i] = createDot(this.ctx, x, y, 15, colorDot)
     }
   }
 
