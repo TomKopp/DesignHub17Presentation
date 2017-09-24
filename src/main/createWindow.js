@@ -4,7 +4,7 @@ const fs = require('fs')
 
 /**
  * @param {string} URL2Load url that will be loaded in the window
- * @return {BrowserWindow} returns a new hidden window
+ * @returns {BrowserWindow} returns a new hidden window
  */
 module.exports = (URL2Load) => {
   // Create the browser window.

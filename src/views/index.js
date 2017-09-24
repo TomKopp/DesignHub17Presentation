@@ -1,3 +1,4 @@
+const { ipcRenderer } = require('electron')
 const h = require('hyperscript')
 const path = require('path')
 const url = require('url')
@@ -42,3 +43,17 @@ mainSelection.forEach((menuItem) => {
 })
 
 parent.appendChild(ul)
+
+
+ipcRenderer.on('playPause', (event, message) => {
+  // select menu item
+  console.log(`${message}: playPause`)
+})
+ipcRenderer.on('prev', (event, message) => {
+  // previous menu item
+  console.log(`${message}: prev`)
+})
+ipcRenderer.on('next', (event, message) => {
+  // next menu item
+  console.log(`${message}: next`)
+})

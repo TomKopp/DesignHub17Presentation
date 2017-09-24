@@ -57,7 +57,7 @@ module.exports = (() => {
     this.tickLength = 34
     // Canvas context
     this.ctx = ctx
-    this.traceLength = 10
+    this.traceLength = 20
     this.traceCounter = 0
     this.trace = []
     this.traceColor = traceColor
@@ -72,13 +72,29 @@ module.exports = (() => {
         x
         , y
       ] = this.wayPoints[(this.traceCounter + i) % this.wayPoints.length]
-      const alphaModifier = i / 10
+      const alphaModifier = i / this.traceLength
+      let radiusModifier = 0
+      let dX = 0
+      let dY = 0
+
+      if (this.trace[i - 1]) {
+        dX = x - this.trace[i - 1].x
+        dY = y - this.trace[i - 1].y
+      } else {
+        dX = x - this.wayPoints[(this.traceCounter + i + 1) % this.wayPoints.length][0]
+        dY = y - this.wayPoints[(this.traceCounter + i + 1) % this.wayPoints.length][1]
+      }
+      // radiusModifier = Math.log(Math.pow(Math.sqrt(dX * dX + dY * dY), -5)) + 5
+      // radiusModifier = Math.pow(Math.E, -(Math.sqrt(dX * dX + dY * dY) - 7) / 2)
+      // radiusModifier = Math.pow(Math.E, -(Math.sqrt(dX * dX + dY * dY) - 3.5))
+      radiusModifier = Math.pow(1.9, -(Math.sqrt(dX * dX + dY * dY) - 5.5))
+      const radius = 15 + radiusModifier
       const colorDot = color(this.traceColor)
         .alpha(0.1 + alphaModifier)
         .rgb()
         .string()
 
-      this.trace[i] = createDot(this.ctx, x, y, 15, colorDot)
+      this.trace[i] = createDot(this.ctx, x, y, radius, colorDot)
     }
   }
 

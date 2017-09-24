@@ -1,5 +1,5 @@
 /* eslint no-magic-numbers: "off" */
-const { remote, screen } = require('electron')
+const { remote, screen, ipcRenderer } = require('electron')
 const h = require('hyperscript')
 const path = require('path')
 const url = require('url')
@@ -55,8 +55,6 @@ csv
 
 
     const update = (tFrame) => {
-      // const nextTick = MyTrace.lastTick + MyTrace.tickLength
-
       if (tFrame - MyTrace.lastTick > MyTrace.tickLength) {
         MyTrace.update()
         MyTrace.lastTick = tFrame
@@ -75,7 +73,7 @@ csv
       render()
     }
 
-    canvas.addEventListener('click', () => {
+    const playPause = () => {
       if (MyTrace.isRunning) {
         window.cancelAnimationFrame(MyTrace.rAF)
         MyTrace.isRunning = false
@@ -84,63 +82,40 @@ csv
         MyTrace.lastTick = performance.now()
         main(performance.now())
       }
+    }
+
+    canvas.addEventListener('click', playPause)
+
+    ipcRenderer.on('playPause', (event, message) => {
+      playPause()
+      console.log(`${message}: playPause`)
+    })
+    ipcRenderer.on('prev', (event, message) => {
+      // previous menu item
+      console.log(`${message}: prev`)
+    })
+    ipcRenderer.on('next', (event, message) => {
+      // next menu item
+      console.log(`${message}: next`)
     })
   })
 
 
-// let vx = 5
-// let vy = 1
-// const update = (tFrame) => {
-//   ball.x += vx
-//   ball.y += vy
+// Open video window
+const displays = screen.getAllDisplays()
+const videoWindow = newWindow(url.format(path.join(process.cwd(), 'src', 'views', 'videoWindow.html')))
+let externalDisplay = null
 
-//   if (ball.y + vy > canvas.height || ball.y + vy < 0) {
-//     vy = -vy;
-//   }
-//   if (ball.x + vx > canvas.width || ball.x + vx < 0) {
-//     vx = -vx;
-//   }
-// }
+for (const i in displays) {
+  if (displays[i].bounds.x !== 0 || displays[i].bounds.y !== 0) {
+    externalDisplay = displays[i]
+    break
+  }
+}
 
-// const render = () => {
-//   // ctx.clearRect(0, 0, canvas.width, canvas.height);
-//   ctx.fillStyle = stylingVars['animation-background-color-dark']
-//   ctx.fillRect(0, 0, canvas.width, canvas.height)
-//   ball.draw(ctx)
-// }
+if (externalDisplay) {
+  videoWindow.setBounds({ x: externalDisplay.bounds.x, y: externalDisplay.bounds.y, width: 1024, height: 768 })
+}
 
-// const main = (tFrame) => {
-//   MyTrace.raf = window.requestAnimationFrame(main)
-//   MyTrace.isRunning = true
-
-//   // Call your update method. In our case, we give it rAF's timestamp.
-//   update(tFrame)
-//   render()
-// }
-
-// Start the cycle
-// canvas.addEventListener('click', () => {
-//   if (!MyTrace.isRunning) {
-//     main()
-//   }
-// })
-
-
-// // Open video window
-// const displays = screen.getAllDisplays()
-// const videoWindow = newWindow(url.format(path.join(process.cwd(), 'src', 'views', 'videoWindow.html')))
-// let externalDisplay = null
-
-// for (const i in displays) {
-//   if (displays[i].bounds.x !== 0 || displays[i].bounds.y !== 0) {
-//     externalDisplay = displays[i]
-//     break
-//   }
-// }
-
-// if (externalDisplay) {
-//   videoWindow.setBounds({ x: externalDisplay.bounds.x, y: externalDisplay.bounds.y, width: 1024, height: 768 })
-// }
-
-// videoWindow.setFullScreen(true)
-// videoWindow.showInactive()
+videoWindow.setFullScreen(true)
+videoWindow.showInactive()
