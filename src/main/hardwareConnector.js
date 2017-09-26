@@ -1,19 +1,15 @@
 const path = require('path')
 const SerialPort = require('serialport')
 const notifyAllBrowserWindows = require(path.join(process.cwd(), 'src', 'main', 'notifyAllBrowserWindows.js'))
+const signals = require(path.join(process.cwd(), 'src', 'signals.js'))
 const utils = require(path.join(process.cwd(), 'src', 'utils.js'))
-const { Readline } = SerialPort.parsers
+const { Readline, Ready } = SerialPort.parsers
 // should be in settings
 const defaults = {
-  port: 'COM6'
+  port: 'COM9'
   , baudRate: 9600
   , delimiter: '\r\n'
 }
-const detectableSignals = [
-  'playPause'
-  , 'prev'
-]
-const filterSignal = (signal, arr) => arr.includes(signal)
 
 module.exports = (options = defaults) => {
   const opts = {}
@@ -24,16 +20,18 @@ module.exports = (options = defaults) => {
   )
 
   const port = new SerialPort(opts.port, { baudRate: opts.baudRate })
-  const parser = new Readline({ delimiter: opts.delimiter })
+  const ready = port.pipe(new Ready({ delimiter: 'A' }))
+  const parser = ready.pipe(new Readline({ delimiter: opts.delimiter }))
 
-  port.pipe(parser);
+  ready.on('ready', () => {
+    port.write(`C${opts.delimiter}`)
+  })
+
   parser.on('data', (data) => {
-    const payload = ''
-
     // evaluate signals
     // notify ipc listeners on specifig signals like 'playPause', 'next', 'prev'
-    if (filterSignal(data, detectableSignals)) {
-      notifyAllBrowserWindows(data, payload)
+    if (signals.has(data)) {
+      notifyAllBrowserWindows('signal', signals.get(data))
     }
   })
   parser.on('error', (err) => process.stderr.write(err.message))

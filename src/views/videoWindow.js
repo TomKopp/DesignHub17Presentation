@@ -2,6 +2,7 @@ const { remote, ipcRenderer } = require('electron')
 const h = require('hyperscript')
 const path = require('path')
 const url = require('url')
+const signals = require(path.join(process.cwd(), 'src', 'signals.js'))
 const winSize = remote.getCurrentWindow().getContentSize()
 const winSizeWidth = 0
 const winSizeHeight = 1
@@ -22,27 +23,16 @@ const video = h(
     , height: winSize[winSizeHeight]
     , controls: true
     , onclick() {
-      if (this.paused) {
-        this.play()
-      } else {
-        this.pause()
-      }
+      ipcRenderer.send('signal', 'playPause')
     }
   }, 'Sorry, no video.'
 )
 
 document.getElementById('mainVideoContainer').appendChild(video)
 
-
-ipcRenderer.on('playPause', (event, message) => {
-  playPause(video)
-  console.log(`${message}: playPause`)
-})
-ipcRenderer.on('prev', (event, message) => {
-  // previous menu item
-  console.log(`${message}: prev`)
-})
-ipcRenderer.on('next', (event, message) => {
-  // next menu item
-  console.log(`${message}: next`)
+ipcRenderer.on('signal', (event, message) => {
+  if (signals.get('playPause') === message) {
+    playPause(video)
+  }
+  console.log(message)
 })

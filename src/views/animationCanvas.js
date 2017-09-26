@@ -4,6 +4,7 @@ const h = require('hyperscript')
 const path = require('path')
 const url = require('url')
 const newWindow = remote.require(path.join(process.cwd(), 'src', 'main', 'createWindow.js'))
+const signals = require(path.join(process.cwd(), 'src', 'signals.js'))
 const stylingVars = require(path.join(process.cwd(), 'config', 'styling-variables.js'))
 const utilsAnimation = require(path.join(process.cwd(), 'src', 'utilsAnimation.js'))
 
@@ -28,6 +29,15 @@ const csv = require('fast-csv')
 let myArray = []
 let avgZ = null
 
+const buildTraceCoords = () => {
+  avgZ = myArray.reduce((carry, curr) => carry + curr[1], 0) / myArray.length
+
+  myArray = myArray.map((val) => [
+    val[0] * widthCoefficient + winContentSizeWidth / 2
+    , (val[1] - avgZ) * heightCoefficient + winContentSizeHeight / 2
+  ])
+}
+
 csv
   .fromPath(path.join(process.cwd(), 'assets', 'Testdaten Kinect Tanzen.csv'), { trim: true, ignoreEmpty: true })
   .transform((data) => [
@@ -40,13 +50,8 @@ csv
   })
   .on('end', () => {
     // process.stdout('done')
-    avgZ = myArray.reduce((carry, curr) => carry + curr[1], 0) / myArray.length
 
-    myArray = myArray.map((val) => [
-      val[0] * widthCoefficient + winContentSizeWidth / 2
-      , (val[1] - avgZ) * heightCoefficient + winContentSizeHeight / 2
-    ])
-
+    buildTraceCoords()
 
     const ctx = canvas.getContext('2d')
     const MyTrace = utilsAnimation.createTrace(myArray, ctx, stylingVars['animation-trace-color-default'])
@@ -84,19 +89,13 @@ csv
       }
     }
 
-    canvas.addEventListener('click', playPause)
+    canvas.addEventListener('click', () => ipcRenderer.send('signal', 'playPause'))
 
-    ipcRenderer.on('playPause', (event, message) => {
-      playPause()
-      console.log(`${message}: playPause`)
-    })
-    ipcRenderer.on('prev', (event, message) => {
-      // previous menu item
-      console.log(`${message}: prev`)
-    })
-    ipcRenderer.on('next', (event, message) => {
-      // next menu item
-      console.log(`${message}: next`)
+    ipcRenderer.on('signal', (event, message) => {
+      if (signals.get('playPause') === message) {
+        playPause()
+      }
+      console.log(message)
     })
   })
 

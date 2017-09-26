@@ -2,6 +2,7 @@ const { ipcRenderer } = require('electron')
 const h = require('hyperscript')
 const path = require('path')
 const url = require('url')
+const signals = require(path.join(process.cwd(), 'src', 'signals.js'))
 
 // @TODO: load from config
 const mainSelection = [
@@ -44,16 +45,6 @@ mainSelection.forEach((menuItem) => {
 
 parent.appendChild(ul)
 
-
-ipcRenderer.on('playPause', (event, message) => {
-  // select menu item
-  console.log(`${message}: playPause`)
-})
-ipcRenderer.on('prev', (event, message) => {
-  // previous menu item
-  console.log(`${message}: prev`)
-})
-ipcRenderer.on('next', (event, message) => {
-  // next menu item
-  console.log(`${message}: next`)
+ipcRenderer.on('signal', (event, message) => {
+  console.log(signals.get(message))
 })

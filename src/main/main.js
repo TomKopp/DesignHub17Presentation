@@ -1,9 +1,11 @@
-const { app } = require('electron')
+const { app, ipcMain } = require('electron')
 const path = require('path')
 const url = require('url')
 // const settings = require('electron-settings')
 const newWindow = require(path.join(process.cwd(), 'src', 'main', 'createWindow.js'))
+const notifyAllBrowserWindows = require(path.join(process.cwd(), 'src', 'main', 'notifyAllBrowserWindows.js'))
 const hardwareConnector = require(path.join(process.cwd(), 'src', 'main', 'hardwareConnector.js'))
+const signals = require(path.join(process.cwd(), 'src', 'signals.js'))
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -39,6 +41,12 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (win === null) {
     createWindow()
+  }
+})
+
+ipcMain.on('signal', (event, message) => {
+  if (signals.has(message)) {
+    notifyAllBrowserWindows('signal', signals.get(message))
   }
 })
 
