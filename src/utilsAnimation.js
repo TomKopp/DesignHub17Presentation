@@ -118,7 +118,6 @@ module.exports = (() => {
    */
   const createTrace = (wayPoints, ctx, traceColor = '#fff') => new Trace(wayPoints, ctx, traceColor)
 
-
   return Object.freeze({
     createDot
     , createTrace

@@ -13,6 +13,7 @@ module.exports = (URL2Load) => {
     , width: 1024
     , height: 768
     , autoHideMenuBar: true
+    , frame: false
   })
 
   win.loadURL(URL2Load)

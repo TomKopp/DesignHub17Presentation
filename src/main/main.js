@@ -4,7 +4,7 @@ const url = require('url')
 // const settings = require('electron-settings')
 const newWindow = require(path.join(process.cwd(), 'src', 'main', 'createWindow.js'))
 const notifyAllBrowserWindows = require(path.join(process.cwd(), 'src', 'main', 'notifyAllBrowserWindows.js'))
-const hardwareConnector = require(path.join(process.cwd(), 'src', 'main', 'hardwareConnector.js'))
+const hardwareConnector = require(path.join(process.cwd(), 'src', 'main', 'hardwareConnectorSerial.js'))
 const signals = require(path.join(process.cwd(), 'src', 'signals.js'))
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -12,9 +12,10 @@ const signals = require(path.join(process.cwd(), 'src', 'signals.js'))
 let win = null
 
 const createWindow = () => {
-  const frameURL = path.join(process.cwd(), 'src', 'views', 'index.html')
+  // const frameURL = path.join(process.cwd(), 'src', 'views', 'index.html')
   // const frameURL = path.join(process.cwd(), 'src', 'views', 'videoSelection.html')
   // const frameURL = path.join(process.cwd(), 'src', 'views', 'animationCanvas.html')
+  const frameURL = path.join(process.cwd(), 'src', 'views', 'animatedTrace.html')
 
   win = newWindow(url.format(frameURL))
   win.once('ready-to-show', () => {

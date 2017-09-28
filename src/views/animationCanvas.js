@@ -7,10 +7,12 @@ const newWindow = remote.require(path.join(process.cwd(), 'src', 'main', 'create
 const signals = require(path.join(process.cwd(), 'src', 'signals.js'))
 const stylingVars = require(path.join(process.cwd(), 'config', 'styling-variables.js'))
 const utilsAnimation = require(path.join(process.cwd(), 'src', 'utilsAnimation.js'))
+const utilsWindows = require(path.join(process.cwd(), 'src', 'utilsWindows.js'))
 
 const win = remote.getCurrentWindow()
 
-win.setFullScreen(true)
+// win.setFullScreen(true)
+utilsWindows.createMultiScreenWindow(screen, win)
 
 const [
   winContentSizeWidth
@@ -100,21 +102,21 @@ csv
   })
 
 
-// Open video window
-const displays = screen.getAllDisplays()
-const videoWindow = newWindow(url.format(path.join(process.cwd(), 'src', 'views', 'videoWindow.html')))
-let externalDisplay = null
+// // Open video window
+// const displays = screen.getAllDisplays()
+// const videoWindow = newWindow(url.format(path.join(process.cwd(), 'src', 'views', 'videoWindow.html')))
+// let externalDisplay = null
 
-for (const i in displays) {
-  if (displays[i].bounds.x !== 0 || displays[i].bounds.y !== 0) {
-    externalDisplay = displays[i]
-    break
-  }
-}
+// for (const i in displays) {
+//   if (displays[i].bounds.x !== 0 || displays[i].bounds.y !== 0) {
+//     externalDisplay = displays[i]
+//     break
+//   }
+// }
 
-if (externalDisplay) {
-  videoWindow.setBounds({ x: externalDisplay.bounds.x, y: externalDisplay.bounds.y, width: 1024, height: 768 })
-}
+// if (externalDisplay) {
+//   videoWindow.setBounds({ x: externalDisplay.bounds.x, y: externalDisplay.bounds.y, width: 1024, height: 768 })
+// }
 
-videoWindow.setFullScreen(true)
-videoWindow.showInactive()
+// videoWindow.setFullScreen(true)
+// videoWindow.showInactive()

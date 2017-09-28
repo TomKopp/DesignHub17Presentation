@@ -1,11 +1,17 @@
-const { remote, ipcRenderer } = require('electron')
+const { remote, screen, ipcRenderer } = require('electron')
 const h = require('hyperscript')
 const path = require('path')
 const url = require('url')
+const newWindow = remote.require(path.join(process.cwd(), 'src', 'main', 'createWindow.js'))
 const signals = require(path.join(process.cwd(), 'src', 'signals.js'))
-const winSize = remote.getCurrentWindow().getContentSize()
-const winSizeWidth = 0
-const winSizeHeight = 1
+const utilsWindows = require(path.join(process.cwd(), 'src', 'utilsWindows.js'))
+const win = remote.getCurrentWindow()
+
+utilsWindows.createMultiScreenWindow(screen, win)
+
+const contentSize = win.getContentSize()
+const contentWidth = 0
+const contentHeight = 1
 
 const playPause = (video) => {
   if (video.paused) {
@@ -18,12 +24,15 @@ const playPause = (video) => {
 const video = h(
   'video.media'
   , {
-    src: url.format(path.join(process.cwd(), 'assets', 'video.mp4'))
-    , width: winSize[winSizeWidth]
-    , height: winSize[winSizeHeight]
-    , controls: true
+    src: url.format(path.join(process.cwd(), 'assets', 'beamershow.mp4'))
+    , width: contentSize[contentWidth]
+    , height: contentSize[contentHeight]
+    , controls: false
     , onclick() {
       ipcRenderer.send('signal', 'playPause')
+    }
+    , ondblclick() {
+      ipcRenderer.send('signal', 'next')
     }
   }, 'Sorry, no video.'
 )
