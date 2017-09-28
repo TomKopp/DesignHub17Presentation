@@ -14,14 +14,34 @@ const win = remote.getCurrentWindow()
 // win.setFullScreen(true)
 utilsWindows.createMultiScreenWindow(screen, win)
 
+// Open windown on second screen
+// const displays = screen.getAllDisplays()
+// let externalDisplay = null
+// for (const i in displays) {
+//   if (displays[i].bounds.x !== 0 || displays[i].bounds.y !== 0) {
+//     externalDisplay = displays[i]
+//     break
+//   }
+// }
+// if (externalDisplay) {
+// win.setBounds({
+//   x: externalDisplay.bounds.x
+//   , y: externalDisplay.bounds.y
+//   , width: externalDisplay.bounds.width
+//   , height: externalDisplay.bounds.height
+// })
+// }
+
 const [
   winContentSizeWidth
   , winContentSizeHeight
 ] = win.getContentSize()
 // projectionWidth in meter
-const projectionWidth = 4
+// const projectionWidth = 4
+const projectionWidth = 3
 // projectionHeight in meter
-const projectionHeight = 2.25
+// const projectionHeight = 2.25
+const projectionHeight = 1.75
 const widthCoefficient = winContentSizeWidth / projectionWidth
 const heightCoefficient = winContentSizeHeight / projectionHeight
 
@@ -41,10 +61,13 @@ const buildTraceCoords = () => {
 }
 
 csv
-  .fromPath(path.join(process.cwd(), 'assets', 'Testdaten Kinect Tanzen.csv'), { trim: true, ignoreEmpty: true })
+  // .fromPath(path.join(process.cwd(), 'assets', 'Testdaten Kinect Tanzen.csv'), { trim: true, ignoreEmpty: true })
+  .fromPath(path.join(process.cwd(), 'assets', 'danceData.csv'), { delimiter: ';', trim: true, ignoreEmpty: true })
   .transform((data) => [
-    parseFloat(data[0])
-    , parseFloat(data[2])
+    // parseFloat(data[0])
+    // , parseFloat(data[2])
+    parseFloat(data[1].replace(/,/g,'.'))
+    , parseFloat(data[3].replace(/,/g, '.'))
   ])
   .on('data', (data) => {
     myArray.push(data)
