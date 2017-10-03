@@ -1,4 +1,5 @@
 /* eslint no-magic-numbers: "off" */
+/* eslint no-mixed-operators: "off" */
 /* eslint func-style: "off" */
 /* eslint max-params: "off" */
 /* eslint max-statements: "off" */

@@ -30,7 +30,7 @@
     "postcss-simple-vars": "^4.1.0"
   },
   "scripts": {
-    "prebuild": "node ./src/postcss.js",
+    "prebuild": "node ./scripts/postcss.js",
     "start": "./node_modules/.bin/electron .",
     "pretest": "./node_modules/.bin/eslint \"./src/**/*.js\" ",
     "test": "echo \"Error: no test specified\" && exit 1",
