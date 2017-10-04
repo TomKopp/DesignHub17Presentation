@@ -33,8 +33,8 @@ utilsWindows.createMultiScreenWindow(screen, win)
 // }
 
 const [
-  winContentSizeWidth
-  , winContentSizeHeight
+	winContentSizeWidth
+	, winContentSizeHeight
 ] = win.getContentSize()
 // projectionWidth in meter
 // const projectionWidth = 4
@@ -52,77 +52,77 @@ let myArray = []
 let avgZ = null
 
 const buildTraceCoords = () => {
-  avgZ = myArray.reduce((carry, curr) => carry + curr[1], 0) / myArray.length
+	avgZ = myArray.reduce((carry, curr) => carry + curr[1], 0) / myArray.length
 
-  myArray = myArray.map((val) => [
-    val[0] * widthCoefficient + winContentSizeWidth / 2
-    , (val[1] - avgZ) * heightCoefficient + winContentSizeHeight / 2
-  ])
+	myArray = myArray.map((val) => [
+		val[0] * widthCoefficient + winContentSizeWidth / 2
+		, (val[1] - avgZ) * heightCoefficient + winContentSizeHeight / 2
+	])
 }
 
 csv
-  // .fromPath(path.join(process.cwd(), 'assets', 'Testdaten Kinect Tanzen.csv'), { trim: true, ignoreEmpty: true })
-  .fromPath(path.join(process.cwd(), 'assets', 'danceData.csv'), { delimiter: ';', trim: true, ignoreEmpty: true })
-  .transform((data) => [
-    // parseFloat(data[0])
-    // , parseFloat(data[2])
-    parseFloat(data[1].replace(/,/g,'.'))
-    , parseFloat(data[3].replace(/,/g, '.'))
-  ])
-  .on('data', (data) => {
-    myArray.push(data)
-    // process.stdout(data)
-  })
-  .on('end', () => {
-    // process.stdout('done')
+	// .fromPath(path.join(process.cwd(), 'assets', 'Testdaten Kinect Tanzen.csv'), { trim: true, ignoreEmpty: true })
+	.fromPath(path.join(process.cwd(), 'assets', 'danceData.csv'), { delimiter: ';', trim: true, ignoreEmpty: true })
+	.transform((data) => [
+		// parseFloat(data[0])
+		// , parseFloat(data[2])
+		parseFloat(data[1].replace(/,/g,'.'))
+		, parseFloat(data[3].replace(/,/g, '.'))
+	])
+	.on('data', (data) => {
+		myArray.push(data)
+		// process.stdout(data)
+	})
+	.on('end', () => {
+		// process.stdout('done')
 
-    buildTraceCoords()
+		buildTraceCoords()
 
-    const ctx = canvas.getContext('2d')
-    const MyTrace = utilsAnimation.createTrace(myArray, ctx, stylingVars['animation-trace-color-default'])
+		const ctx = canvas.getContext('2d')
+		const MyTrace = utilsAnimation.createTrace(myArray, ctx, stylingVars['animation-trace-color-default'])
 
-    document.getElementById('mainAnimationContainer').appendChild(canvas)
+		document.getElementById('mainAnimationContainer').appendChild(canvas)
 
 
-    const update = (tFrame) => {
-      if (tFrame - MyTrace.lastTick > MyTrace.tickLength) {
-        MyTrace.update()
-        MyTrace.lastTick = tFrame
-      }
-    }
+		const update = (tFrame) => {
+			if (tFrame - MyTrace.lastTick > MyTrace.tickLength) {
+				MyTrace.update()
+				MyTrace.lastTick = tFrame
+			}
+		}
 
-    const render = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      MyTrace.render()
-    }
+		const render = () => {
+			ctx.clearRect(0, 0, canvas.width, canvas.height)
+			MyTrace.render()
+		}
 
-    const main = (tFrame) => {
-      MyTrace.rAF = window.requestAnimationFrame(main)
+		const main = (tFrame) => {
+			MyTrace.rAF = window.requestAnimationFrame(main)
 
-      update(tFrame)
-      render()
-    }
+			update(tFrame)
+			render()
+		}
 
-    const playPause = () => {
-      if (MyTrace.isRunning) {
-        window.cancelAnimationFrame(MyTrace.rAF)
-        MyTrace.isRunning = false
-      } else {
-        MyTrace.isRunning = true
-        MyTrace.lastTick = performance.now()
-        main(performance.now())
-      }
-    }
+		const playPause = () => {
+			if (MyTrace.isRunning) {
+				window.cancelAnimationFrame(MyTrace.rAF)
+				MyTrace.isRunning = false
+			} else {
+				MyTrace.isRunning = true
+				MyTrace.lastTick = performance.now()
+				main(performance.now())
+			}
+		}
 
-    canvas.addEventListener('click', () => ipcRenderer.send('signal', 'playPause'))
+		canvas.addEventListener('click', () => ipcRenderer.send('signal', 'playPause'))
 
-    ipcRenderer.on('signal', (event, message) => {
-      if (signals.get('playPause') === message) {
-        playPause()
-      }
-      console.log(message)
-    })
-  })
+		ipcRenderer.on('signal', (event, message) => {
+			if (signals.get('playPause') === message) {
+				playPause()
+			}
+			console.log(message)
+		})
+	})
 
 
 // // Open video window

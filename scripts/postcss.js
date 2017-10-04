@@ -10,54 +10,54 @@ const srcFilePath = path.join(process.cwd(), 'styles', 'main.css')
 const destFilePath = path.join(process.cwd(), 'out', 'styles', 'main.css')
 
 fs.readFile(
-  srcFilePath
-  , (err, css) => {
-    if (err) {
-      process.stderr.write(err.message)
+	srcFilePath
+	, (err, css) => {
+		if (err) {
+			process.stderr.write(err.message)
 
-      return
-    }
+			return
+		}
 
-    postcss([
-      postcssPartialImport({})
-      , simpleVars({ variables: stylingVars })
-      , autoprefixer
-    ])
-      .process(css, { from: srcFilePath, to: destFilePath })
-      .then((result) => {
-        result.warnings().forEach((warning) => {
-          process.stderr.write(warning)
-        })
+		postcss([
+			postcssPartialImport({})
+			, simpleVars({ variables: stylingVars })
+			, autoprefixer
+		])
+			.process(css, { from: srcFilePath, to: destFilePath })
+			.then((result) => {
+				result.warnings().forEach((warning) => {
+					process.stderr.write(warning)
+				})
 
 
-        if (process.env.NODE_ENV === 'production') {
-          process.stderr.write('TODO: minify css')
-        }
+				if (process.env.NODE_ENV === 'production') {
+					process.stderr.write('TODO: minify css')
+				}
 
-        fs.writeFile(
-          destFilePath
-          , result.css
-          , (err) => {
-            if (err) {
-              process.stderr.write(err.message)
-            }
-          }
-        )
+				fs.writeFile(
+					destFilePath
+					, result.css
+					, (err) => {
+						if (err) {
+							process.stderr.write(err.message)
+						}
+					}
+				)
 
-        if (result.map) {
-          fs.writeFile(
-            path.join(process.cwd(), 'out', 'styles', 'main.css.map')
-            , result.map
-            , (err) => {
-              if (err) {
-                process.stderr.write(err.message)
-              }
-            }
-          )
-        }
-      })
-      .catch((err) => {
-        process.stderr.write(err)
-      })
-  }
+				if (result.map) {
+					fs.writeFile(
+						path.join(process.cwd(), 'out', 'styles', 'main.css.map')
+						, result.map
+						, (err) => {
+							if (err) {
+								process.stderr.write(err.message)
+							}
+						}
+					)
+				}
+			})
+			.catch((err) => {
+				process.stderr.write(err)
+			})
+	}
 )
