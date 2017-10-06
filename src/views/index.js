@@ -1,28 +1,29 @@
 const { ipcRenderer } = require('electron')
 const h = require('hyperscript')
-const path = require('path')
-const url = require('url')
-const signals = require(path.join(process.cwd(), 'src', 'signals.js'))
+const { join } = require('path')
+const { format } = require('url')
+const signals = require(join(process.cwd(), 'config', 'signals.js'))
+const stylingVars = require(join(process.cwd(), 'config', 'styling-variables.js'))
 
 // @TODO: load from config
 const mainSelection = [
 	{
 		label: 'Insert Video'
 		, sublabel: 'Description'
-		, media: url.format(path.join(process.cwd(), 'assets', 'icons', 'mic.svg'))
-		, resource: url.format('#')
+		, media: format(join(process.cwd(), 'assets', 'icons', 'mic.svg'))
+		, resource: format('#')
 	}
 	, {
 		label: 'Select Video'
 		, sublabel: 'Description'
-		, media: url.format(path.join(process.cwd(), 'assets', 'icons', 'mic.svg'))
-		, resource: url.format(path.join(process.cwd(), 'src', 'views', 'videoSelection.html'))
+		, media: format(join(process.cwd(), 'assets', 'icons', 'mic.svg'))
+		, resource: format(join(process.cwd(), 'src', 'views', 'videoSelection.html'))
 	}
 	, {
 		label: 'Settings'
 		, sublabel: 'Description'
-		, media: url.format(path.join(process.cwd(), 'assets', 'icons', 'mic.svg'))
-		, resource: url.format('#')
+		, media: format(join(process.cwd(), 'assets', 'icons', 'mic.svg'))
+		, resource: format('#')
 	}
 ]
 
@@ -35,7 +36,7 @@ mainSelection.forEach((menuItem) => {
 		, h(
 			'a.box-center-content'
 			, { href: menuItem.resource }
-			, h('img', { src: menuItem.media, alt: `${menuItem.label} icon`, height: 50, width: 50 })
+			, h('img', { src: menuItem.media, alt: `${menuItem.label} icon`, height: stylingVars['size-icon-xxl'], width: stylingVars['size-icon-xxl'] })
 			, h('h2.label', menuItem.label)
 		)
 	)

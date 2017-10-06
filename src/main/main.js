@@ -1,22 +1,23 @@
 const { app, ipcMain } = require('electron')
-const path = require('path')
+const { join } = require('path')
 const { format } = require('url')
 // const settings = require('electron-settings')
-const { createWindow, broadcastMsg } = require(path.join(process.cwd(), 'src', 'main', 'helperWindows.js'))
-const hardwareConnector = require(path.join(process.cwd(), 'src', 'main', 'hardwareConnectorSerial.js'))
-const signals = require(path.join(process.cwd(), 'config', 'signals.js'))
+const { createWindow, broadcastMsg } = require(join(process.cwd(), 'src', 'main', 'helperWindows.js'))
+const hardwareConnector = require(join(process.cwd(), 'src', 'main', 'hardwareConnectorSerial.js'))
+const signals = require(join(process.cwd(), 'config', 'signals.js'))
+const stylingVars = require(join(process.cwd(), 'config', 'styling-variables.js'))
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win = null
 
 const newWindow = () => {
-	// const frameURL = format(path.join(process.cwd(), 'src', 'views', 'index.html'))
-	// const frameURL = format(path.join(process.cwd(), 'src', 'views', 'videoSelection.html'))
-	// const frameURL = format(path.join(process.cwd(), 'src', 'views', 'animationCanvas.html'))
-	const frameURL = format(path.join(process.cwd(), 'src', 'views', 'animatedTrace.html'))
+	// const frameURL = format(join(process.cwd(), 'src', 'views', 'index.html'))
+	// const frameURL = format(join(process.cwd(), 'src', 'views', 'videoSelection.html'))
+	// const frameURL = format(join(process.cwd(), 'src', 'views', 'animationCanvas.html'))
+	const frameURL = format(join(process.cwd(), 'src', 'views', 'animatedTrace.html'))
 
-	win = createWindow(frameURL)
+	win = createWindow(frameURL, { backgroundColor: stylingVars['background-color-dark'] })
 	win.once('ready-to-show', () => {
 		win.show()
 	})

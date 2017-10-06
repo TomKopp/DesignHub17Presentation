@@ -1,6 +1,6 @@
-const { BrowserWindow, screen } = require('electron')
-const path = require('path')
-const fs = require('fs')
+const electron = require('electron')
+const { join } = require('path')
+const { readFile } = require('fs')
 
 // Origin of coordinates
 const oOC = {
@@ -33,10 +33,10 @@ const getExternalBounds = (externalDisplays) => externalDisplays
 	.reduce((carry, el) => ({
 		x: Math.min(carry.x, el.x)
 		, y: Math.min(carry.y, el.y)
-		, height: el.x === oOC.x
+		, height: carry.x === el.x
 			? carry.height + el.height
 			: Math.min(carry.height, el.height)
-		, width: el.y === oOC.y
+		, width: carry.y === el.y
 			? carry.width + el.width
 			: Math.min(carry.width, el.width)
 	}))
@@ -49,13 +49,13 @@ const getExternalBounds = (externalDisplays) => externalDisplays
  * @returns {BrowserWindow} returns a new hidden window
  */
 const createWindow = (Url2Load, options) => {
-	let win = new BrowserWindow(Object.assign({}, optsBrowserWindow, options))
+	let win = new electron.BrowserWindow(Object.assign({}, optsBrowserWindow, options))
 
 	win.loadURL(Url2Load)
 
 	win.webContents.on('did-finish-load', () => {
-		fs.readFile(
-			path.join(process.cwd(), 'out', 'styles', 'main.css')
+		readFile(
+			join(process.cwd(), 'out', 'styles', 'main.css')
 			, 'utf8'
 			, (err, data) => {
 				if (err) {
@@ -111,7 +111,7 @@ const createWindowMultiScreen = (Url2Load, options) => {
 	win.setBounds({ height, width, x, y })
 	*/
 
-	const externalBounds = getExternalBounds(getExternalDisplays(screen))
+	const externalBounds = getExternalBounds(getExternalDisplays(electron.screen))
 
 	const opts = {
 		frame: false
@@ -134,7 +134,7 @@ const createWindowMultiScreen = (Url2Load, options) => {
  * @returns {@function} notifys all BrowserWindows
  */
 const broadcastMsg = (event, message) => {
-	BrowserWindow.getAllWindows().forEach((win) => {
+	electron.BrowserWindow.getAllWindows().forEach((win) => {
 		win.webContents.send(event, message)
 	})
 }

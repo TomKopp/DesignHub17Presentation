@@ -1,17 +1,14 @@
-const { remote, screen, ipcRenderer } = require('electron')
+const { remote, ipcRenderer } = require('electron')
 const h = require('hyperscript')
-const path = require('path')
-const url = require('url')
-const newWindow = remote.require(path.join(process.cwd(), 'src', 'main', 'createWindow.js'))
-const signals = require(path.join(process.cwd(), 'src', 'signals.js'))
-const utilsWindows = require(path.join(process.cwd(), 'src', 'utilsWindows.js'))
-const win = remote.getCurrentWindow()
+const { join } = require('path')
+const { format } = require('url')
+const signals = require(join(process.cwd(), 'config', 'signals.js'))
+// const { createWindowMultiScreen, broadcastMsg } = require(join(process.cwd(), 'src', 'main', 'helperWindows.js'))
 
-utilsWindows.createMultiScreenWindow(screen, win)
-
-const contentSize = win.getContentSize()
-const contentWidth = 0
-const contentHeight = 1
+const [
+	winContentSizeWidth
+	, winContentSizeHeight
+] = remote.getCurrentWindow().getContentSize()
 
 const playPause = (video) => {
 	if (video.paused) {
@@ -24,9 +21,9 @@ const playPause = (video) => {
 const video = h(
 	'video.media'
 	, {
-		src: url.format(path.join(process.cwd(), 'assets', 'beamershow.mp4'))
-		, width: contentSize[contentWidth]
-		, height: contentSize[contentHeight]
+		src: format(join(process.cwd(), 'assets', 'beamershow.mp4'))
+		, width: winContentSizeWidth
+		, height: winContentSizeHeight
 		, controls: false
 		, onclick() {
 			ipcRenderer.send('signal', 'playPause')
