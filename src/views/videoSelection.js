@@ -1,28 +1,28 @@
 const { ipcRenderer } = require('electron')
 const h = require('hyperscript')
-const path = require('path')
-const url = require('url')
-const signals = require(path.join(process.cwd(), 'src', 'signals.js'))
+const { join } = require('path')
+const { format } = require('url')
+const signals = require(join(process.cwd(), 'config', 'signals.js'))
 
 // @TODO: load from config
 const mainSelection = [
 	{
 		label: 'LAND OF ALL'
 		, sublabel: 'contemporary dance - MN DANCE COMPANY'
-		, media: url.format(path.join(process.cwd(), 'assets', 'video.mp4'))
-		, resource: url.format(path.join(process.cwd(), 'src', 'views', 'animationCanvas.html'))
+		, media: format(join(process.cwd(), 'assets', 'video.mp4'))
+		, resource: format(join(process.cwd(), 'src', 'views', 'animationCanvas.html'))
 	}
 	, {
 		label: 'A Great Big World- Say Something'
 		, sublabel: 'Contemporary Dance Auti Kamal x Matt Sagisi & Caitlin Barfield'
-		, media: url.format(path.join(process.cwd(), 'assets', 'video.mp4'))
-		, resource: url.format(path.join(process.cwd(), 'src', 'views', 'animationCanvas.html'))
+		, media: format(join(process.cwd(), 'assets', 'video.mp4'))
+		, resource: format(join(process.cwd(), 'src', 'views', 'animationCanvas.html'))
 	}
 	, {
 		label: 'A Great Big World- Say Something'
 		, sublabel: 'Contemporary Dance TUTORIAL @autikamaln'
-		, media: url.format(path.join(process.cwd(), 'assets', 'video.mp4'))
-		, resource: url.format(path.join(process.cwd(), 'src', 'views', 'animationCanvas.html'))
+		, media: format(join(process.cwd(), 'assets', 'video.mp4'))
+		, resource: format(join(process.cwd(), 'src', 'views', 'animationCanvas.html'))
 	}
 ]
 

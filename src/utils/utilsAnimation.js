@@ -29,17 +29,6 @@ Dot.prototype.draw = function draw() {
 	this.ctx.fill();
 }
 
-/**
- * Creates a new Dot
- * @param {Object} ctx desc
- * @param {number} [posX=0] desc
- * @param {number} [posY=0] desc
- * @param {number} [radius=10] desc
- * @param {string} [color='#667788'] desc
- * @returns {Dot} desc
- */
-const createDot = (ctx, posX = 0, posY = 0, radius = 10, color = '#667788') => new Dot(posX, posY, ctx, radius, color)
-
 
 /**
  * @param {Object[]} wayPoints Path for the trace
@@ -93,7 +82,7 @@ Trace.prototype.fillTrace = function fillTrace() {
 			.rgb()
 			.string()
 
-		this.trace[i] = createDot(this.ctx, x, y, radius, colorDot)
+		this.trace[i] = new Dot(this.ctx, x, y, radius, colorDot)
 	}
 }
 
@@ -108,16 +97,19 @@ Trace.prototype.render = function render() {
 	})
 }
 
+
 /**
- * Creates a new Trace
- * @param {Object[]} wayPoints Path for the trace
- * @param {Object} ctx canvas.getContext()
- * @param {string} [traceColor='#fff'] Base color for the trace
- * @returns {Trace} desc
+ *
+ * @param {string} id id
+ * @returns {Dancer} dancer
  */
-const createTrace = (wayPoints, ctx, traceColor = '#fff') => new Trace(wayPoints, ctx, traceColor)
+function Dancer(id) {
+	this.id = id
+	this.wayPoints = []
+}
 
 module.exports = Object.freeze({
-	createDot
-	, createTrace
+	createDot: (ctx, posX = 0, posY = 0, radius = 10, color = '#667788') => new Dot(posX, posY, ctx, radius, color)
+	, createTrace: (wayPoints, ctx, traceColor = '#fff') => new Trace(wayPoints, ctx, traceColor)
+	, createDancer: (id) => new Dancer(id)
 })

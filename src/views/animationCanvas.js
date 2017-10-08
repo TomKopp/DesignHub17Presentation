@@ -24,18 +24,16 @@ const [
 	winContentSizeWidth
 	, winContentSizeHeight
 ] = win.getContentSize()
-// projectionWidth in meter
-// const projectionWidth = 4
-const projectionWidth = 3
-// projectionHeight in meter
-// const projectionHeight = 2.25
-const projectionHeight = 1.75
-const widthCoefficient = winContentSizeWidth / projectionWidth
-const heightCoefficient = winContentSizeHeight / projectionHeight
 // let traceData = []
 const dancePaths = new Map()
 
 const normalizeDancePaths = (dancePathsMap) => {
+	// projectionWidth in meter @TODO - move to settings
+	const projectionWidth = 3
+	// projectionHeight in meter @TODO - move to settings
+	const projectionHeight = 1.75
+	const widthCoefficient = winContentSizeWidth / projectionWidth
+	const heightCoefficient = winContentSizeHeight / projectionHeight
 	let avg = 0
 	let numberOfElements = 0
 
@@ -85,7 +83,9 @@ csv
 	.on('end', () => {
 		normalizeDancePaths(dancePaths)
 
-		const ctx = canvas.getContext('2d')
+		// const ctx = canvas.getContext('2d')
+		// make new canvas for each dancer
+		// like a new layer for each dancer
 	})
 
 // const buildTraceCoords = () => {
