@@ -66,11 +66,13 @@ csv
 		data[0]
 		, parseFloat(data[1].replace(/,/g, '.'))
 		, parseFloat(data[3].replace(/,/g, '.'))
+		, data[4]
 	])
 	.on('data', ([
 		dancerId
 		, xCoord
 		, zCoord
+		, timestamp
 	]) => {
 		if (dancePaths.has(dancerId) === false) {
 			dancePaths.set(dancerId, [])
@@ -78,6 +80,7 @@ csv
 		dancePaths.get(dancerId).push([
 			xCoord
 			, zCoord
+			, timestamp
 		])
 	})
 	.on('end', () => {

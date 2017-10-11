@@ -21,7 +21,7 @@ function Dot(posX, posY, ctx, radius, color) {
 	this.ctx = ctx
 }
 
-Dot.prototype.draw = function draw() {
+Dot.prototype.render = function render() {
 	this.ctx.beginPath();
 	this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
 	this.ctx.closePath();
@@ -93,7 +93,7 @@ Trace.prototype.update = function update() {
 
 Trace.prototype.render = function render() {
 	this.trace.forEach((el) => {
-		el.draw()
+		el.render()
 	})
 }
 
