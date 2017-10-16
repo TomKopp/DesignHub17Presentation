@@ -20,11 +20,18 @@ const [
 ] = win.getContentSize()
 const canvas = h(
 	'canvas#animationCanvas'
-	, { width: winContentSizeWidth, height: winContentSizeHeight }
+	, {
+		width: winContentSizeWidth
+		, height: winContentSizeHeight
+		, onclick() {
+			ipcRenderer.send('signal', 'playPause')
+		}
+	}
 	, 'Sorry no canvas to draw on.'
 )
 const dancers = new Map()
 const dancePaths = new Map()
+let firstTimeStamp = null
 
 const normalizeDancePaths = (dancePathsMap) => {
 	// projectionWidth in meter @TODO - move to settings
@@ -42,10 +49,19 @@ const normalizeDancePaths = (dancePathsMap) => {
 	})
 	avg /= numberOfElements
 	dancePathsMap.forEach((val) => {
-		val.forEach(([x, z], i, arr) => {
+		val.forEach(([x, z, timestamp], i, arr) => {
+			let time = 0
+
+			if (firstTimeStamp === null) {
+				firstTimeStamp = timestamp
+			} else {
+				time = timestamp - firstTimeStamp
+			}
+
 			arr[i] = [
 				x * widthCoefficient + winContentSizeWidth / 2
 				, (z - avg) * heightCoefficient + winContentSizeHeight / 2
+				, time
 			]
 		})
 	})
@@ -78,7 +94,7 @@ csv
 		dancerId
 		, parseFloat(xCoord.replace(/,/g, '.'))
 		, parseFloat(zCoord.replace(/,/g, '.'))
-		, timestamp
+		, parseFloat(timestamp.replace(/,/g, '.'))
 	])
 	.on('data', ([
 		dancerId
@@ -86,13 +102,6 @@ csv
 		, zCoord
 		, timestamp
 	]) => {
-		// if (dancers.has(dancerId) === false) {
-		// 	dancers.set(dancerId, createActor())
-		// }
-		// dancers.get(dancerId).keyframe(timestamp, {
-		// 	x: xCoord
-		// 	, y: zCoord
-		// })
 		if (dancePaths.has(dancerId) === false) {
 			dancePaths.set(dancerId, [])
 		}
@@ -109,7 +118,13 @@ csv
 			if (dancers.has(key) === false) {
 				dancers.set(key, createActor())
 			}
-			dancers.get(key).keyframe(path[2], { x: path[0], y: path[1] })
+			const bla = dancers.get(key)
+
+			path.forEach(([x, y, timestamp]) => {
+				if (bla.hasKeyframeAt(timestamp) === false) {
+					bla.keyframe(timestamp, { x, y })
+				}
+			})
 		})
 		dancers.forEach((dancer) => {
 			rekapi.addActor(dancer)
@@ -117,10 +132,10 @@ csv
 	})
 
 const playPause = () => {
-	if (rekapi.isPaused()) {
-		rekapi.play()
-	} else {
+	if (rekapi.isPlaying()) {
 		rekapi.pause()
+	} else {
+		rekapi.play()
 	}
 }
 

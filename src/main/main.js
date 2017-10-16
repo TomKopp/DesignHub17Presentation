@@ -16,7 +16,7 @@ const newWindow = () => {
 	// const frameURL = format(join(process.cwd(), 'src', 'views', 'videoSelection.html'))
 	// const frameURL = format(join(process.cwd(), 'src', 'views', 'animationCanvas.html'))
 	// const frameURL = format(join(process.cwd(), 'src', 'views', 'animatedTrace.html'))
-	const frameURL = format(join(process.cwd(), 'src', 'views', 'animatedEnsemble.html'))
+	const frameURL = format(join(process.cwd(), 'src', 'views', 'animationEnsemble.html'))
 
 	win = createWindow(frameURL, { backgroundColor: stylingVars['background-color-dark'] })
 	win.once('ready-to-show', () => {
