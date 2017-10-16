@@ -99,17 +99,91 @@ Trace.prototype.render = function render() {
 
 
 /**
- *
  * @param {string} id id
- * @returns {Dancer} dancer
+ * @param {Object} ctx cavas.getContext()
+ * @param {string} fill color
+ * @returns {Player} dancer
  */
-function Dancer(id) {
+function Player(id, ctx, fill) {
 	this.id = id
+	this.ctx = ctx
+	this.color = fill
+	this.lastUpdate = null
 	this.wayPoints = []
+	this.objects = []
 }
+
+Player.prototype.update = function update(tFrame) {
+	const [
+		x
+		, y
+		, timestamp
+	] = this.wayPoints[this.traceCounter % this.wayPoints.length]
+
+	if (tFrame - this.lastUpdate > timestamp) {
+		this.objects[0] = new Dot(
+			this.ctx
+			, x
+			, y
+			, 20
+			, color(this.color)
+				.rgb()
+				.string()
+		)
+		this.lastUpdate = tFrame
+	}
+}
+
+Player.prototype.render = function render() {
+	this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
+	this.objects.forEach((el) => {
+		el.render()
+	})
+}
+
+
+/**
+ *
+ * @returns {Game} game
+ */
+function Game() {
+	this.rAF = null
+	this.paused = true
+	this.objects = []
+}
+
+Game.prototype.main = function main(tFrame) {
+	this.rAF = window.requestAnimationFrame(this.main)
+	this.update(tFrame)
+	this.render()
+}
+
+Game.prototype.update = function update(tFrame) {
+	this.objects.forEach((player) => {
+		player.update(tFrame)
+	})
+}
+
+Game.prototype.render = function render() {
+	this.objects.forEach((player) => {
+		player.render()
+	})
+}
+
+Game.prototype.play = function play() {
+	this.paused = false
+	this.main(performance.now())
+}
+
+Game.prototype.pause = function pause() {
+	this.paused = true
+	window.cancelAnimationFrame(this.rAF)
+}
+
 
 module.exports = Object.freeze({
 	createDot: (ctx, posX = 0, posY = 0, radius = 10, color = '#667788') => new Dot(posX, posY, ctx, radius, color)
 	, createTrace: (wayPoints, ctx, traceColor = '#fff') => new Trace(wayPoints, ctx, traceColor)
-	, createDancer: (id) => new Dancer(id)
+	, createPlayer: (id) => new Player(id)
+	, createGame: () => new Game()
 })
