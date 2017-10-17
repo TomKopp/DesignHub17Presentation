@@ -74,7 +74,7 @@ const createActor = () => new Actor({
 		ctx.beginPath()
 		ctx.arc(state.x, state.y, 20, 0, Math.PI * 2, true)
 		ctx.closePath()
-		ctx.fillStyle = '#fff'
+		ctx.fillStyle = state.fill
 		ctx.fill()
 	}
 })
@@ -122,9 +122,14 @@ csv
 
 			path.forEach(([x, y, timestamp]) => {
 				if (bla.hasKeyframeAt(timestamp) === false) {
-					bla.keyframe(timestamp, { x, y })
+					bla.keyframe(timestamp, { x, y, fill: '#fff' })
 				}
 			})
+
+			if (bla.hasKeyframeAt(0) === false) {
+				bla.copyKeyframe(bla.getStart(), 0)
+				bla.modifyKeyframe(0, { fill: null })
+			}
 		})
 		dancers.forEach((dancer) => {
 			rekapi.addActor(dancer)
