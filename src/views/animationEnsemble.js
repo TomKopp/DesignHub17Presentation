@@ -72,7 +72,7 @@ const rekapi = new Rekapi(canvas.getContext('2d'))
 const createActor = () => new Actor({
 	render: (ctx, state) => {
 		ctx.beginPath()
-		ctx.arc(state.x, state.y, 20, 0, Math.PI * 2, true)
+		ctx.arc(state.x, state.y, 60, 0, Math.PI * 2, true)
 		ctx.closePath()
 		ctx.fillStyle = state.fill
 		ctx.fill()
@@ -118,17 +118,17 @@ csv
 			if (dancers.has(key) === false) {
 				dancers.set(key, createActor())
 			}
-			const bla = dancers.get(key)
+			const dancer = dancers.get(key)
 
 			path.forEach(([x, y, timestamp]) => {
-				if (bla.hasKeyframeAt(timestamp) === false) {
-					bla.keyframe(timestamp, { x, y, fill: '#fff' })
+				if (dancer.hasKeyframeAt(timestamp) === false) {
+					dancer.keyframe(timestamp, { x, y, fill: '#fff' })
 				}
 			})
 
-			if (bla.hasKeyframeAt(0) === false) {
-				bla.copyKeyframe(bla.getStart(), 0)
-				bla.modifyKeyframe(0, { fill: null })
+			if (dancer.hasKeyframeAt(0) === false) {
+				dancer.copyKeyframe(dancer.getStart(), 0)
+				dancer.modifyKeyframe(0, { fill: null })
 			}
 		})
 		dancers.forEach((dancer) => {
