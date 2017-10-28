@@ -1,3 +1,13 @@
+:root {
+  --mdc-theme-primary: $theme-primary;
+  --mdc-theme-primary-light: $theme-primary-light;
+  --mdc-theme-primary-dark: $theme-primary-dark;
+  --mdc-theme-secondary: $theme-secondary;
+  --mdc-theme-secondary-light: $theme-secondary-light;
+	--mdc-theme-secondary-dark: $theme-secondary-dark;
+	/* --mdc-theme-text-primary-on-primary: $text-color-primary-on-light; */
+}
+
 html,
 body,
 main {
@@ -8,6 +18,14 @@ main {
   width: 100vw;
 }
 
+#background-container {
+	height: 100vh;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 100vw;
+	z-index: -1;
+}
 
 body {
   background-color: $background-color-dark;

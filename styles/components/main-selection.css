@@ -1,7 +1,0 @@
-.main-selection {
-  border-radius: 3px;
-  border: 1px solid;
-  box-shadow: $shadow-block-default, $shadow-block-light-inset;
-  grid-area: 3/3/8/-3;
-  overflow-y: auto;
-}

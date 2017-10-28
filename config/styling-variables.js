@@ -1,9 +1,20 @@
 module.exports = {
 	// https://comet.discoveryeducation.com/resources/tokens.html
 
+	// Theme
+	'theme-primary': '#FF6143'
+	, 'theme-primary-light': '#FF9470'
+	, 'theme-primary-dark': '#C52C19'
+	// secondary #2fb370
+	, 'theme-secondary': '#FFFDFB'
+	// secondary-light #6ae69f
+	, 'theme-secondary-light': '#FFFFFF'
+	// secondary-dark #008244
+	, 'theme-secondary-dark': '#CCCAC8'
+
 	// Color
 	// Background Color
-	'background-color-default': '#FFFFFF'
+	, 'background-color-default': '#FFFFFF'
 	, 'background-color-light': '#E2E4E9'
 	, 'background-color-dark': '#2b2a2a'
 

@@ -1,8 +1,8 @@
 @import './mainWindow.css';
-@import './components/scaffolding.css';
+@import './components/grid.css';
+@import './components/container.css';
 @import './components/links.css';
 @import './components/lists.css';
 @import './components/media-object.css';
 @import './components/menu.css';
 @import './components/hero.css';
-@import './components/main-selection.css';

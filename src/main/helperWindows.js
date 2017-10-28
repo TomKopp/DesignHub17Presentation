@@ -53,19 +53,30 @@ const createWindow = (Url2Load, options) => {
 
 	win.loadURL(Url2Load)
 
-	win.webContents.on('did-finish-load', () => {
-		readFile(
-			join(process.cwd(), 'out', 'styles', 'styles.css')
-			, 'utf8'
-			, (err, data) => {
-				if (err) {
-					process.stderr.write(err.message)
-				} else {
-					win.webContents.insertCSS(data)
-				}
-			}
-		)
-	})
+	// win.webContents.on('did-finish-load', () => {
+	// 	readFile(
+	// 		join(process.cwd(), 'node_modules', 'material-components-web', 'dist', 'material-components-web.css')
+	// 		, 'utf8'
+	// 		, (err, data) => {
+	// 			if (err) {
+	// 				process.stderr.write(err.message)
+	// 			} else {
+	// 				win.webContents.insertCSS(data)
+	// 			}
+	// 		}
+	// 	)
+	// 	readFile(
+	// 		join(process.cwd(), 'out', 'styles', 'styles.css')
+	// 		, 'utf8'
+	// 		, (err, data) => {
+	// 			if (err) {
+	// 				process.stderr.write(err.message)
+	// 			} else {
+	// 				win.webContents.insertCSS(data)
+	// 			}
+	// 		}
+	// 	)
+	// })
 
 	win.on('closed', () => {
 		win = null
