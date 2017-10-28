@@ -2,32 +2,80 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <title>DesignHub 2017</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>DesignHub 2017</title>
+
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<!-- <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css"> -->
+	<link rel="stylesheet" href="./../../node_modules/material-components-web/dist/material-components-web.css">
+	<link rel="stylesheet" href="./../../out/styles/styles.css">
 </head>
 
-<body>
-  <main class="grid-default">
+<body class="mdc-typography">
 
-    <div class="hero">
-      <h1>DesignHub 2017</h1>
-      We are using node
-      <script>
-        document.write(process.versions.node)
-      </script>, Chrome
-      <script>
-        document.write(process.versions.chrome)
-      </script>, and Electron
-      <script>
-        document.write(process.versions.electron)
-      </script>.
-    </div>
+	<aside class="mdc-temporary-drawer">
+		<nav class="mdc-temporary-drawer__drawer">
+			<header class="mdc-temporary-drawer__header">
+				<div class="mdc-temporary-drawer__header-content mdc-theme--primary-bg mdc-theme--text-primary-on-primary">
+					<h1>Title of Performance - might actually be long</h1>
+				</div>
+			</header>
+			<nav class="mdc-temporary-drawer__content mdc-list-group">
+				<div id="icon-with-text-demo" class="mdc-list">
+					<a class="mdc-list-item" data-mdc-tabindex-handled="true" tabindex="-1">
+						<i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Favorites
+					</a>
+					<a class="mdc-list-item mdc-temporary-drawer--selected" data-mdc-tabindex-handled="true" tabindex="-1">
+						<i class="material-icons mdc-list-item__start-detail" aria-hidden="true">video_library</i>Video Library
+					</a>
+					<a class="mdc-list-item" data-mdc-tabindex-handled="true" tabindex="-1">
+						<i class="material-icons mdc-list-item__start-detail" aria-hidden="true">drafts</i>Drafts
+					</a>
+				</div>
 
-    <div id="main-selection" class="main-selection"></div>
+				<hr class="mdc-list-divider">
 
-  </main>
+				<div class="mdc-list">
+					<a class="mdc-list-item" href="#" data-mdc-tabindex-handled="true" tabindex="-1">
+						<i class="material-icons mdc-list-item__start-detail" aria-hidden="true">settings</i>Preferences
+					</a>
+					<a id="btn-close" class="mdc-list-item" href="#" data-mdc-tabindex-handled="true" tabindex="-1">
+						<i class="material-icons mdc-list-item__start-detail" aria-hidden="true">power_settings_new</i>Quit
+					</a>
+				</div>
+			</nav>
+		</nav>
+	</aside>
 
-  <script src="./index.js"></script>
+	<div id="background-container" class="container-center-content"></div>
+
+	<main class="grid-default">
+		<nav class="menu-main">
+			<button id="btn-menu" class="material-icons mdc-toolbar__menu-icon">menu</button>
+		</nav>
+	</main>
+
+	<!-- <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script> -->
+	<script src="./../../node_modules/material-components-web/dist/material-components-web.js"></script>
+	<script>
+		const { remote, ipcRenderer } = require('electron')
+		window.mdc.autoInit();
+
+		const MDCTemporaryDrawer = mdc.drawer.MDCTemporaryDrawer
+		const drawer = new MDCTemporaryDrawer(document.querySelector('.mdc-temporary-drawer'))
+
+		document.querySelector('#btn-menu').addEventListener('click', () => {
+			drawer.open = true
+		})
+
+		document.querySelector('#btn-close').addEventListener('click', () => {
+			remote.getCurrentWindow().close()
+		})
+
+	</script>
+
+
 </body>
 
 </html>
