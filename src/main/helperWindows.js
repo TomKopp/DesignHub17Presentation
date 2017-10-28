@@ -55,7 +55,7 @@ const createWindow = (Url2Load, options) => {
 
 	win.webContents.on('did-finish-load', () => {
 		readFile(
-			join(process.cwd(), 'out', 'styles', 'main.css')
+			join(process.cwd(), 'out', 'styles', 'styles.css')
 			, 'utf8'
 			, (err, data) => {
 				if (err) {

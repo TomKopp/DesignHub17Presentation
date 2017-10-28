@@ -6,8 +6,8 @@ const postcssPartialImport = require('postcss-partial-import')
 const simpleVars = require('postcss-simple-vars')
 const stylingVars = require(path.join(process.cwd(), 'config', 'styling-variables.js'))
 
-const srcFilePath = path.join(process.cwd(), 'styles', 'main.css')
-const destFilePath = path.join(process.cwd(), 'out', 'styles', 'main.css')
+const srcFilePath = path.join(process.cwd(), 'styles', 'styles.css')
+const destFilePath = path.join(process.cwd(), 'out', 'styles', 'styles.css')
 
 fs.readFile(
 	srcFilePath
