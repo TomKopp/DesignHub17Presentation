@@ -1,51 +1,64 @@
-const { ipcRenderer } = require('electron')
+/* global mdc */
+const { remote, ipcRenderer } = require('electron')
 const h = require('hyperscript')
 const { join } = require('path')
 const { format } = require('url')
 const signals = require(join(process.cwd(), 'config', 'signals.js'))
-const stylingVars = require(join(process.cwd(), 'config', 'styling-variables.js'))
+const [
+	winContentSizeWidth
+	, winContentSizeHeight
+] = remote.getCurrentWindow().getContentSize()
 
-// @TODO: load from config
-const mainSelection = [
-	{
-		label: 'Insert Video'
-		, sublabel: 'Description'
-		, media: format(join(process.cwd(), 'assets', 'icons', 'mic.svg'))
-		, resource: format('#')
+/*
+	functions
+*/
+const playPause = (video) => {
+	if (video.paused) {
+		video.play()
+	} else {
+		video.pause()
 	}
+}
+
+/*
+	elements
+*/
+const drawer = new mdc.drawer.MDCTemporaryDrawer(document.querySelector('.mdc-temporary-drawer'))
+
+const video = h(
+	'video.media'
 	, {
-		label: 'Select Video'
-		, sublabel: 'Description'
-		, media: format(join(process.cwd(), 'assets', 'icons', 'mic.svg'))
-		, resource: format(join(process.cwd(), 'src', 'views', 'videoSelection.html'))
-	}
-	, {
-		label: 'Settings'
-		, sublabel: 'Description'
-		, media: format(join(process.cwd(), 'assets', 'icons', 'mic.svg'))
-		, resource: format('#')
-	}
-]
+		src: format(join(process.cwd(), 'assets', 'video.mp4'))
+		, width: winContentSizeWidth
+		, height: winContentSizeHeight
+		// , controls: true
+		, onclick() {
+			ipcRenderer.send('signal', 'playPause')
+		}
+	}, 'Sorry, no video.'
+)
 
-const parent = document.getElementById('main-selection')
-const ul = h('ul.list-pictures-large')
+document.getElementById('background-container').appendChild(video)
 
-mainSelection.forEach((menuItem) => {
-	const li = h(
-		'li.list-item-pictures-large'
-		, h(
-			'a.box-center-content'
-			, { href: menuItem.resource }
-			, h('img', { src: menuItem.media, alt: `${menuItem.label} icon`, height: stylingVars['size-icon-xxl'], width: stylingVars['size-icon-xxl'] })
-			, h('h2.label', menuItem.label)
-		)
-	)
-
-	ul.appendChild(li)
+document.querySelector('#btn-menu').addEventListener('click', () => {
+	drawer.open = true
 })
 
-parent.appendChild(ul)
+document.querySelector('#btn-close').addEventListener('click', () => {
+	remote.getCurrentWindow().close()
+})
 
+/*
+	ipc
+*/
 ipcRenderer.on('signal', (event, message) => {
-	console.log(signals.get(message))
+	if (signals.get('playPause') === message) {
+		playPause(video)
+	}
+	if (signals.get('next') === message) {
+		video.currentTime += 3
+	}
+	if (signals.get('prev') === message) {
+		video.currentTime -= 3
+	}
 })

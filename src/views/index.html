@@ -8,8 +8,11 @@
 
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<!-- <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css"> -->
-	<link rel="stylesheet" href="./../../node_modules/material-components-web/dist/material-components-web.css">
+	<link rel="stylesheet" href="./../../node_modules/material-components-web/dist/material-components-web.min.css">
 	<link rel="stylesheet" href="./../../out/styles/styles.css">
+
+	<!-- <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script> -->
+	<script src="./../../node_modules/material-components-web/dist/material-components-web.min.js"></script>
 </head>
 
 <body class="mdc-typography">
@@ -56,26 +59,9 @@
 		</nav>
 	</main>
 
-	<!-- <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script> -->
-	<script src="./../../node_modules/material-components-web/dist/material-components-web.js"></script>
-	<script>
-		const { remote, ipcRenderer } = require('electron')
-		window.mdc.autoInit();
 
-		const MDCTemporaryDrawer = mdc.drawer.MDCTemporaryDrawer
-		const drawer = new MDCTemporaryDrawer(document.querySelector('.mdc-temporary-drawer'))
-
-		document.querySelector('#btn-menu').addEventListener('click', () => {
-			drawer.open = true
-		})
-
-		document.querySelector('#btn-close').addEventListener('click', () => {
-			remote.getCurrentWindow().close()
-		})
-
-	</script>
-
-
+	<script>window.mdc.autoInit()</script>
+	<script src="./index.js"></script>
 </body>
 
 </html>
