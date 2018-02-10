@@ -11,9 +11,20 @@ module.exports = {
 	"rules": {
 		"accessor-pairs": "error",
 		"array-bracket-newline": "error",
-		"array-bracket-spacing": "error",
+		"array-bracket-spacing": [
+			"error",
+			"always",
+			{
+				"singleValue": false
+			}
+		],
 		"array-callback-return": "error",
-		"array-element-newline": "error",
+		"array-element-newline": [
+			"error",
+			{
+				"multiline": true
+			}
+		],
 		"arrow-body-style": "error",
 		"arrow-parens": [
 			"error",
@@ -221,9 +232,9 @@ module.exports = {
 		"one-var-declaration-per-line": "error",
 		"operator-assignment": "error",
 		"operator-linebreak": [
-		  "error",
-		  "before"
-		]  ,
+			"error",
+			"before"
+		],
 		"padded-blocks": "off",
 		"padding-line-between-statements": "error",
 		"prefer-arrow-callback": "error",
@@ -252,9 +263,9 @@ module.exports = {
 		"sort-vars": "error",
 		"space-before-blocks": "error",
 		"space-before-function-paren": ["error", {
-		  "anonymous": "always",
-		  "named": "never",
-		  "asyncArrow": "always"
+			"anonymous": "always",
+			"named": "never",
+			"asyncArrow": "always"
 		}],
 		"space-in-parens": [
 			"error",

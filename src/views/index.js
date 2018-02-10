@@ -4,10 +4,7 @@ const h = require('hyperscript')
 const { join } = require('path')
 const { format } = require('url')
 const signals = require(join(process.cwd(), 'config', 'signals.js'))
-const [
-	winContentSizeWidth
-	, winContentSizeHeight
-] = remote.getCurrentWindow().getContentSize()
+const [ winContentSizeWidth, winContentSizeHeight ] = remote.getCurrentWindow().getContentSize()
 
 /*
 	functions
