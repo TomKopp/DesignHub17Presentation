@@ -14,19 +14,19 @@
     "url": "https://github.com/witzbould/designhub17presentation/issues"
   },
   "dependencies": {
-    "color": "^2.0.0",
-    "electron-settings": "^3.1.1",
-    "fast-csv": "^2.4.0",
+    "color": "^2.0.1",
+    "electron-settings": "^3.1.4",
+    "fast-csv": "^2.4.1",
     "hyperscript": "^2.0.2",
     "rekapi": "^2.0.6",
-    "serialport": "^5.0.0"
+    "serialport": "^6.0.4"
   },
   "devDependencies": {
-    "autoprefixer": "^7.1.4",
-    "electron": "^1.7.8",
+    "autoprefixer": "^7.1.6",
+    "electron": "^1.7.9",
     "electron-rebuild": "^1.6.0",
-    "eslint": "^4.7.1",
-    "postcss": "^6.0.11",
+    "eslint": "^4.11.0",
+    "postcss": "^6.0.14",
     "postcss-partial-import": "^4.1.0",
     "postcss-simple-vars": "^4.1.0"
   },
