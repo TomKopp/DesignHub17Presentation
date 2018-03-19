@@ -2,31 +2,19 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <title>DesignHub 2017</title>
+	<meta charset="UTF-8">
+	<title>DesignHub 2017</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-  <main class="grid-default">
+	<main id="mainAnimationContainer" class="box-center-content">
 
-    <div class="hero">
-      <h1>DesignHub 2017</h1>
-      We are using node
-      <script>
-        document.write(process.versions.node)
-      </script>, Chrome
-      <script>
-        document.write(process.versions.chrome)
-      </script>, and Electron
-      <script>
-        document.write(process.versions.electron)
-      </script>.
-    </div>
+	</main>
 
-    <div id="main-selection" class="main-selection"></div>
-
-  </main>
-
+	<div id="loading" style="width:20vw;height: 20vh;background: lightgrey;position: fixed;left: 40vw;top: 40vh;color: black;">
+		<p>Loading...</p>
+	</div>
   <script src="./index.js"></script>
 </body>
 

@@ -1,20 +1,18 @@
-const { remote, ipcRenderer } = require('electron')
-const h = require('hyperscript')
-const { join } = require('path')
-const { format } = require('url')
-const signals = require(join(process.cwd(), 'config', 'signals.js'))
-const [
-	winContentSizeWidth
-	, winContentSizeHeight
-] = remote.getCurrentWindow().getContentSize()
+const { remote, ipcRenderer } = require('electron');
+const h = require('hyperscript');
+const { join } = require('path');
+const { format } = require('url');
+const { loggerStdout } = require(join(process.cwd(), 'src', 'utils', 'utils.js'));
+const signals = require(join(process.cwd(), 'config', 'signals.js'));
+const [ winContentSizeWidth, winContentSizeHeight ] = remote.getCurrentWindow().getContentSize();
 
 const playPause = (video) => {
 	if (video.paused) {
-		video.play()
+		video.play();
 	} else {
-		video.pause()
+		video.pause();
 	}
-}
+};
 
 const video = h(
 	'video.media'
@@ -24,22 +22,22 @@ const video = h(
 		, height: winContentSizeHeight
 		, controls: true
 		, onclick() {
-			ipcRenderer.send('signal', 'playPause')
+			ipcRenderer.send('signal', 'playPause');
 		}
 	}, 'Sorry, no video.'
-)
+);
 
-document.getElementById('mainVideoContainer').appendChild(video)
+document.getElementById('mainVideoContainer').appendChild(video);
 
 ipcRenderer.on('signal', (event, message) => {
 	if (signals.get('playPause') === message) {
-		playPause(video)
+		playPause(video);
 	}
 	if (signals.get('next') === message) {
-		video.currentTime += 3
+		video.currentTime += 3;
 	}
 	if (signals.get('prev') === message) {
-		video.currentTime -= 3
+		video.currentTime -= 3;
 	}
-	console.log(message)
-})
+	loggerStdout(message);
+});

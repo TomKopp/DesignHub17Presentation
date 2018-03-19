@@ -1,12 +1,12 @@
-const electron = require('electron')
-const { join } = require('path')
-const { readFile } = require('fs')
+const electron = require('electron');
+const { join } = require('path');
+const { readFile } = require('fs');
 
 // Origin of coordinates
 const oOC = {
 	x: 0
 	, y: 0
-}
+};
 
 // @TODO - move to settings
 const optsBrowserWindow = {
@@ -14,14 +14,14 @@ const optsBrowserWindow = {
 	, width: 1024
 	, height: 768
 	, autoHideMenuBar: true
-}
+};
 
 /**
  * Filter all displays for externals ones
  * @param  {screen} screen electron's screen instance
  * @return {Display[]} filtered array of displays
  */
-const getExternalDisplays = (screen) => screen.getAllDisplays().filter((el) => el.bounds.x !== oOC.x || el.bounds.y !== oOC.y)
+const getExternalDisplays = (screen) => screen.getAllDisplays().filter((el) => el.bounds.x !== oOC.x || el.bounds.y !== oOC.y);
 
 /**
  * Gets the maximal bounds for a frame across all external screens
@@ -39,7 +39,7 @@ const getExternalBounds = (externalDisplays) => externalDisplays
 		, width: carry.y === el.y
 			? carry.width + el.width
 			: Math.min(carry.width, el.width)
-	}))
+	}));
 
 /**
  * Create a new hidden browser window.
@@ -49,9 +49,9 @@ const getExternalBounds = (externalDisplays) => externalDisplays
  * @returns {BrowserWindow} returns a new hidden window
  */
 const createWindow = (Url2Load, options) => {
-	let win = new electron.BrowserWindow(Object.assign({}, optsBrowserWindow, options))
+	let win = new electron.BrowserWindow(Object.assign({}, optsBrowserWindow, options));
 
-	win.loadURL(Url2Load)
+	win.loadURL(Url2Load);
 
 	win.webContents.on('did-finish-load', () => {
 		readFile(
@@ -59,20 +59,20 @@ const createWindow = (Url2Load, options) => {
 			, 'utf8'
 			, (err, data) => {
 				if (err) {
-					process.stderr.write(err.message)
+					process.stderr.write(err.message);
 				} else {
-					win.webContents.insertCSS(data)
+					win.webContents.insertCSS(data);
 				}
 			}
-		)
-	})
+		);
+	});
 
 	win.on('closed', () => {
-		win = null
-	})
+		win = null;
+	});
 
-	return win
-}
+	return win;
+};
 
 /**
  * Create a new browser window, that spanns across multiple screens.
@@ -111,12 +111,12 @@ const createWindowMultiScreen = (Url2Load, options) => {
 	win.setBounds({ height, width, x, y })
 	*/
 
-	const externalBounds = getExternalBounds(getExternalDisplays(electron.screen))
+	const externalBounds = getExternalBounds(getExternalDisplays(electron.screen));
 
 	const opts = {
 		frame: false
 		, bounds: { height: externalBounds.height, width: externalBounds.width, x: 0, y: 0 }
-	}
+	};
 
 	return createWindow(
 		Url2Load
@@ -124,8 +124,8 @@ const createWindowMultiScreen = (Url2Load, options) => {
 			options
 			, opts
 		)
-	)
-}
+	);
+};
 
 /**
  * Notifys all BrowserWindows
@@ -135,13 +135,13 @@ const createWindowMultiScreen = (Url2Load, options) => {
  */
 const broadcastMsg = (event, message) => {
 	electron.BrowserWindow.getAllWindows().forEach((win) => {
-		win.webContents.send(event, message)
-	})
-}
+		win.webContents.send(event, message);
+	});
+};
 
 
 module.exports = Object.freeze({
 	createWindow
 	, createWindowMultiScreen
 	, broadcastMsg
-})
+});

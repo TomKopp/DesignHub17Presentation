@@ -11,9 +11,21 @@ module.exports = {
 	"rules": {
 		"accessor-pairs": "error",
 		"array-bracket-newline": "error",
-		"array-bracket-spacing": "error",
+		"array-bracket-spacing": [
+			"error",
+			"always",
+			{
+				"singleValue": false
+			}
+		],
 		"array-callback-return": "error",
-		"array-element-newline": "error",
+		"array-element-newline": [
+			"error",
+			{
+				"multiline": true,
+				"minItems": 4
+			}
+		],
 		"arrow-body-style": "error",
 		"arrow-parens": [
 			"error",
@@ -162,7 +174,7 @@ module.exports = {
 		"no-octal-escape": "error",
 		"no-param-reassign": "error",
 		"no-path-concat": "error",
-		"no-plusplus": "error",
+		"no-plusplus": "off",
 		"no-process-env": "off",
 		"no-process-exit": "error",
 		"no-proto": "error",
@@ -221,9 +233,9 @@ module.exports = {
 		"one-var-declaration-per-line": "error",
 		"operator-assignment": "error",
 		"operator-linebreak": [
-		  "error",
-		  "before"
-		]  ,
+			"error",
+			"before"
+		],
 		"padded-blocks": "off",
 		"padding-line-between-statements": "error",
 		"prefer-arrow-callback": "error",
@@ -244,7 +256,7 @@ module.exports = {
 		"require-await": "error",
 		"require-jsdoc": "error",
 		"rest-spread-spacing": "error",
-		"semi": "off",
+		"semi": "error",
 		"semi-spacing": "error",
 		"semi-style": "error",
 		"sort-imports": "error",
@@ -252,9 +264,9 @@ module.exports = {
 		"sort-vars": "error",
 		"space-before-blocks": "error",
 		"space-before-function-paren": ["error", {
-		  "anonymous": "always",
-		  "named": "never",
-		  "asyncArrow": "always"
+			"anonymous": "always",
+			"named": "never",
+			"asyncArrow": "always"
 		}],
 		"space-in-parens": [
 			"error",
