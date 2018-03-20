@@ -1,6 +1,6 @@
 const { remote, ipcRenderer } = require('electron');
 const { join } = require('path');
-const { createWriteStream, writeFileSync } = require('fs');
+const { readFile, writeFileSync } = require('fs');
 const h = require('hyperscript');
 const csv = require('fast-csv');
 const { Rekapi, Actor } = require('rekapi');
@@ -13,13 +13,8 @@ let firstTimeStamp = null;
 const dancers = new Map();
 // const distances = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
 const distances = [40, 40, 40, 40, 40, 40, 40, 40, 40, 40];
-const fileName = 'danceData (3).csv';
-const writableStream = createWriteStream(join(process.cwd(), 'assets', 'danceData.processed.csv'));
-const csvStream = csv.createWriteStream({
-	delimiter: ';'
-	, trim: true
-	, ignoreEmpty: true
-});
+const filePath = join(process.cwd(), 'assets', 'danceData.csv');
+const filePathProcessed = join(process.cwd(), 'assets', 'danceData.processed.json');
 const [ winContentSizeWidth, winContentSizeHeight ] = remote.getCurrentWindow().getContentSize();
 const canvas = h(
 	'canvas#animationCanvas'
@@ -39,7 +34,9 @@ const playPause = () => {
 	if (rekapi.isPlaying()) {
 		rekapi.pause();
 	} else {
-		rekapi.play(1);
+		const replayCount = 1;
+
+		rekapi.play(replayCount);
 	}
 };
 
@@ -67,6 +64,14 @@ const addPathsToDancers = ([
 	dancers.get(dancerId).push([ x, y, timestamp ]);
 };
 
+const addPlayPauseHandler = () => {
+	ipcRenderer.on('signal', (event, message) => {
+		if (signals.get('playPause') === message) {
+			playPause();
+		}
+		loggerStdout(message);
+	});
+};
 
 const normalizeDancePaths = (dancePathsMap) => {
 	// projectionWidth in meter @TODO - move to settings
@@ -104,6 +109,12 @@ const getRandomIntInclusive = (min, max) => {
 
 	// The maximum is inclusive and the minimum is inclusive
 	return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const importTimeline = (data) => {
+	const timeline = JSON.parse(data);
+
+	rekapi.importTimeline(timeline);
 };
 
 /* eslint max-statements: "off" */
@@ -153,13 +164,9 @@ const doMyShit = () => {
 
 				const myArr = new Array(10);
 
-				myArr.forEach((el, key, arr) => {
-					arr[key] = 40 + getRandomIntInclusive(-5, 5);
+				distances.forEach((el, key) => {
+					myArr[key] = el + getRandomIntInclusive(-5, 5);
 				});
-
-				// distances.forEach((el, key) => {
-				// 	myArr[key] = el + getRandomIntInclusive(-5, 5);
-				// });
 
 				// const bla = new PositionMarker(x, y, distances);
 				const bla = new PositionMarker(x, y, myArr);
@@ -181,44 +188,60 @@ const doMyShit = () => {
 	});
 
 	writeFileSync(join(process.cwd(), 'assets', 'danceData.processed.json'), JSON.stringify(rekapi.exportTimeline({ withId: true })));
-	document.getElementById('loading').remove();
-	csvStream.end();
+};
+
+const loadProcessCSV = () => {
+	csv
+		.fromPath(
+			filePath
+			, {
+				delimiter: ';'
+				, trim: true
+				, ignoreEmpty: true
+			}
+		)
+		.transform(csvTransformer)
+		.on('data', addPathsToDancers)
+		.on('end', () => {
+			normalizeDancePaths(dancers);
+
+			doMyShit();
+		});
 };
 
 
-csvStream.pipe(writableStream);
+// ############# calling part ###############
 
-
-csv
-	.fromPath(
-		join(process.cwd(), 'assets', 'danceData (3).csv')
-		, {
-			delimiter: ';'
-			, trim: true
-			, ignoreEmpty: true
-		}
-	)
-	.transform(csvTransformer)
-	.on('data', addPathsToDancers)
-	.on('end', () => {
-		const baum = document.getElementById('loading');
-
-		normalizeDancePaths(dancers);
-
-		rekapi.on('animationComplete', () => loggerStdout('animation complete'));
-
-		baum.innerHTML = '<p>Click to process tracking data.</p>';
-		baum.addEventListener('click', doMyShit);
-		// document.getElementById('loading').remove();
-		// csvStream.end();
-	});
-
-
-ipcRenderer.on('signal', (event, message) => {
-	if (signals.get('playPause') === message) {
-		playPause();
-	}
-	loggerStdout(message);
-});
 
 document.getElementById('mainAnimationContainer').appendChild(canvas);
+// @TODO: Show load screen
+
+readFile(filePathProcessed, (err, data) => {
+	if (err) {
+		if (err.code === 'ENOENT') {
+			// Processed file does not exist.
+
+			// @TODO: Show warning for long calculation
+			// Load csv file and process it
+			loadProcessCSV();
+
+			return;
+		}
+		throw err;
+	}
+
+	try {
+		importTimeline(data);
+		rekapi.getAllActors().forEach((el) => el.render = renderMyShit);
+	} catch (error) {
+		loggerStdout(error);
+		// Load csv file and process it
+		loadProcessCSV();
+	}
+
+	rekapi.on('animationComplete', () => loggerStdout('animation complete'));
+	addPlayPauseHandler();
+	document.getElementById('loading').remove();
+});
+
+
