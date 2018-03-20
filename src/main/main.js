@@ -12,7 +12,7 @@ const stylingVars = require(join(process.cwd(), 'config', 'styling-variables.js'
 let win = null;
 
 const newWindow = () => {
-	const frameURL = format(join(process.cwd(), 'src', 'views', 'index.html'));
+	const frameURL = format(join('file:///', process.cwd(), 'src', 'views', 'index.html'));
 
 	win = createWindow(frameURL, { backgroundColor: stylingVars['background-color-dark'], frame: false, fullscreen: true });
 	win.once('ready-to-show', () => {
