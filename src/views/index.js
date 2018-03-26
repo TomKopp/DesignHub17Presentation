@@ -113,14 +113,14 @@ const importTimeline = (data) => {
 
 // 2nd dimension of perlin noise
 let yoff = 0.0;
-const r = 60;
+const r = 65;
 const angle = 360;
 const steps = 60;
 // 0 - 1
-const amplitude = 0.5;
+const amplitude = 0.7;
 // 0.1 - 30
 const intensity = 5;
-const speed = 0.02;
+const speed = 0.015;
 
 /* eslint max-statements: "off" */
 const renderMyShit = (ctx, state) => {
